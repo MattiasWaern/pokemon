@@ -1,0 +1,21 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+header{
+    height: 6vh;
+    background-color: aliceblue;
+}
+
+
+main{
+    background-color: aqua;
+    height: 90vh;
+}
+
+footer{
+    background-color: blueviolet;
+    height: 4vh;
+}
