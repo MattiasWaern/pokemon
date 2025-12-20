@@ -4,11 +4,60 @@
     box-sizing: border-box;
 }
 
-header{
-    height: 6vh;
-    background-color: aliceblue;
+:root{
+    --primary-color: #ff5350;
+    --accent-color: #ffcb05;
+    --secondary-color: #3761a8;
+    --text-color: white;
 }
 
+header{
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    padding: 20px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    top: 0;
+    position: sticky;
+    z-index: 1000;
+}
+
+.header-content{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.logo i {
+    margin-right: 30px;
+    font-size: 2.5rem;
+    color: var(--accent-color); 
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 1));
+}
+
+.logo h1{
+    letter-spacing: 4px;
+    font-weight: 700;
+    font-size: 2.8rem;
+    color: var(--text-color);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 1));
+}
+
+.tagline{
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+}
 
 main{
     background-color: aqua;
