@@ -12,6 +12,17 @@
     --text-color: black;
 }
 
+body{
+    background: linear-gradient(135deg,var(--primary-color) 0%, var(--accent-color) 100%);
+    min-height: 100vh;
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0px auto;
+    padding: 0 20px;
+}
+
 header{
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     padding: 20px 0;
@@ -98,7 +109,7 @@ header{
 }
 
 main{
-    background-color: aqua;
+
     height: 90vh;
 }
 
