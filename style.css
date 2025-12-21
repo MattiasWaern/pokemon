@@ -95,6 +95,7 @@ header{
 }
 
 .search-box button{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background: var(--accent-color);
     color: var(--text-color);
     border: none;
@@ -103,6 +104,12 @@ header{
     font-size: 1.2rem;
     transition: all 0.2s ease;
     letter-spacing: 2px;
+}
+
+.search-box button::before{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 10px;
 }
 
 .search-box button:hover{
