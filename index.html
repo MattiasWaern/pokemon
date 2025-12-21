@@ -18,7 +18,7 @@
                     <h1>Pokémon Explorer</h1>
             </div>
             
-            <p class="tagline">Search and discover your favourite pokemon!</p>
+            <p class="tagline">Search and discover your favourite Pokémon!</p>
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder= "Search Pokémon by name or ID (e.g., Pikachu or 25)">
@@ -30,12 +30,119 @@
 </header>
 
 <main class="container">
-<h2>Main</h2>
+
+    <div class="results-info" id="results-info">
+        Showing 20 Pokémon
+    </div>
+
+    <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading Pokémon...
+    </div>
+
+    <div class="error" id="error">
+        <i class="fas fa-exclamation-triangle"></i> <span id="error-text"></span> Error Loading Pokémon Data
+    </div>
+
+    <div class="pokemon-grid" id="pokemon-grid">
+        <!-- Pokémon cards will be inserted here by JavaScript -->
+    </div>
+
+    <div class="pagination">
+        <button id="prev-btn" class="page-btn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="page-info" id="page-info">Page 1 of 65</span>
+        <button id="next-btn" class="page-btn">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
 </main>
+
+<!-- Pokemon Detail Cards -->
+
+<div class="card" id="pokemon-card">
+    <div class="card-content">
+        <div class="card-header">
+            <div>
+                <h2 class="card-title" id="card-name">Pikachu</h2>
+                <div class="card-id" id="card-id">#025</div>
+            </div>
+            <button class="close-card" id="close-card">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="card-image-section">
+            <div class="card-image" id="card-image">
+                <img src="" alt="Pokemon">
+            </div>
+            <div class="card-types" id="card-types">
+                <!-- Type badges will be inserted here -->
+            </div>
+        </div>
+
+        <div class="card-info-section">
+            <div class="info-section">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i>Basic Info</h3>
+
+                <div class="basic-info">
+                    <div class="stat-item">
+                        <span class="stat-name">Height</span>
+                        <span class="stat-value-card" id="card-height">0.4m</span>
+                    </div>
+
+                     <div class="stat-item">
+                        <span class="stat-name">Weight</span>
+                        <span class="stat-value-card" id="card-weight">6.0kg</span>
+                    </div>
+
+                     <div class="stat-item">
+                        <span class="stat-name">Base Experience</span>
+                        <span class="stat-value-card" id="card-exp">112</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="section-title"><i class="fas fa-star"></i> Abilities</h3>
+
+                <div class="abilities-list" id="card-abilities">
+                    <!-- Abilities will be inserted here -->
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="section-title"><i class="fas fa-chart-bar"></i> Stats</h3>
+
+                <div class="stats-grid" id="card-stats">
+                    <!-- Stats will be inserted here -->
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="section-title"><i class="fas fa-bolt"></i> Moves (First 10)</h3>
+
+                <div class="moves-list" id="card-moves">
+                    <!-- Moves will be inserted here -->
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3 class="section-title"><i class="fas fa-link"></i> Evolution Chain</h3>
+
+                <div class="evolution-chain" id="card-evolution">
+                    <!-- Evolution chain will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <footer class="container">
-<h3>Footer</h3>
+    <p>Pokémon Explorer | Data from <a href="https://pokeapi.co/" style="color: var(--accent-color);">PokeAPI</a> | Not affiliated with Nintendo or The Pokémon Company</p>
 </footer>
 
 </body>
