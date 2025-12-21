@@ -251,8 +251,49 @@ main{
     transition: all 0.3s ease;
 }
 
+.close-card:hover{
+    background: #ff3835;
+    transform: rotate(90deg);
+}
+
+.card-body{
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.loading{
+    text-align: center;
+    padding: 40px;
+    font-size: 1.5rem;
+    display: none;
+}
+
+.loading.active{
+    display: block;
+}
+
+.loading i {
+    color: var(--accent-color);
+    margin-right: 10px;
+}
 
 
+
+
+.error{
+    text-align: center;
+    padding: 40px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px 0;
+    display: none;
+}
+
+.error.active {
+    display: block;
+}
 
 .pagination{
     display: flex;
