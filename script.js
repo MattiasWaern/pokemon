@@ -7,3 +7,4 @@ const prevButton = document.getElementById(prev-btn);
 const nextButton = document.getElementById(next-btn);
 const pokemonGrid = document.getElementById(pokemon-grid);
 const pageInfo = document.getElementById(page-info);
+const siteError = document.getElementById(error);
