@@ -26,3 +26,47 @@ const cardAbilities = document.getElementById('card-abilities');
 const cardStats = document.getElementById('card-stats');
 const cardMoves = document.getElementById('card-moves');
 const cardEvolution = document.getElementById('card-evolution');
+
+
+// Pokemon type colors mapping
+
+const typeColors = {
+    grass: 'var(--grass)',
+    fire: 'var(--fire)',
+    water: 'var(--water)',
+    bug: 'var(--bug)',
+    normal: 'var(--normal)',
+    poison: 'var(--poison)',
+    electric: 'var(--electric)',
+    ground: 'var(--ground)',
+    fairy: 'var(--fairy)',
+    fighting: 'var(--fighting)',
+    psychic: 'var(--psychic)',
+    rock: 'var(--rock)',
+    ghost: 'var(--ghost)',
+    ice: 'var(--ice)',
+    dragon: 'var(--dragon)',
+    dark: 'var(--dark)',
+    steel: 'var(--steel)',
+    flying: 'var(--flying)'
+};
+
+// Stat colors 
+
+const statColors = {
+    hp: '#FF5959',
+    attack: '#F5AC78',
+    defense: '#FAE078',
+    'special-attack': '#9DB7F5',
+    'special-defense': '#A7DB8D',
+    speed: '#FA92B2'
+};
+
+// App state
+
+let currentPage = 1;
+let totalPages = 65;
+let currentTypeFilter = 'all';
+let pokemonData = [];
+let displayPokemon = [];
+let currentPokemonDetail = null;
