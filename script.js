@@ -102,3 +102,18 @@ async function loadPokemon(){
         console.error(err);
     }
 }
+
+function updatePokemonGrid() {
+    pokemonGrid.innerHTML = '';
+
+    if(displayedPokemon.length === 0) {
+        pokemonGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem;">No Pokemon found matching your search.</div>';
+
+        return;
+    }
+
+    displayPokemon.forEach(pokemon => {
+        const pokemonCard = createPokemonCard(pokemon);
+        pokemonGrid.appendChild(pokemonCard);
+    });
+}
