@@ -70,3 +70,35 @@ let currentTypeFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
 let currentPokemonDetail = null;
+
+
+async function loadPokemon(){
+    showLoading();
+    hideError();
+
+    try{
+        const offset = (currentPage - 1) * 20;
+
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`);
+        const data = await response.json();
+
+        const detailedPokemon = await Promise.all(
+            data.results.map(async (pokemon) => {
+                const pokemonResponse = await fetch(pokemon.url);
+                return pokemonResponse.json();
+            })
+        );
+
+        pokemonData = detailedPokemon;
+        displayPokemon = detailedPokemon;
+
+        updatePokemonGrid();
+        updateResultsInfo();
+        updatePagination();
+        hideLoading();
+    } catch (error) {
+        showError('Failed to load Pokemon data. Please try again.');
+        hideLoading();
+        console.error(err);
+    }
+}
