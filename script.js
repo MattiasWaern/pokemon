@@ -169,3 +169,75 @@ function updatePokemonGrid() {
         pokemonGrid.appendChild(pokemonCard);
     });
 }
+
+function createPokemonCard(pokemon){
+    const card = document.createElement('div');
+    card.classname = 'pokemon-card';
+
+    const pokemonId = pokemon.id.toString().padStart(3, '0');
+
+    const primaryType = pokemon.types[0].type.name;
+
+    card.innerHTML = 
+    `
+    <div class="card-header">
+        <span class="pokemon-id">#${pokemonId}</span>
+        <h3 class="pokemon-name">${pokemon.name}</h3>
+    </div>
+
+    <div class="pokemon-image">
+        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_defualt}" alt=${pokemon.name}">
+    </div>
+
+    <div class="pokemon-types">
+        ${pokemon.types.map(typeInfo => {
+            const typeName = typeInfo.type.name;
+            return `<span class="type-badge" style="background: ${typeColors[typeName]}">${typeName}</span>`;
+        
+        }).join('')}
+    </div>
+
+    <div class="pokemon-stats">
+        <div class="stat">
+            <div class="stat-label">Height</div>
+            <div class="stat-value">${pokemon.height / 10}m</div>
+        </div>
+         <div class="stat">
+            <div class="stat-label">Weight</div>
+            <div class="stat-value">${pokemon.weight / 10}kg</div>
+        </div>
+         <div class="stat">
+            <div class="stat-label">HP</div>
+            <div class="stat-value">${pokemon.stats[0].base_stat}</div>
+        </div>
+    `;
+
+    card.addEventListener('click', () => {
+        showPokemonDetail(pokemon);
+    });
+
+    return card;
+}
+
+
+
+
+
+
+
+function showLoading() {
+    loading.classList.add('active');
+}
+
+function hideLoading() {
+    loading.classList.remove('active');
+}
+
+function showError(message){
+    errorText.textContent = message;
+    error.classList.add('active');
+}
+
+function hideError() {
+    error.classList.remove('active');
+}
