@@ -101,7 +101,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function initializeTypeFilters() {
+    const types = Object.keys(typeColors);
 
+    const allButton = document.createElement('button');
+    allButton.className = 'type-btn active';
+    allButton.textContent = 'All';
+    allButton.style.background = 'var(--primary-color)';
+    allButton.dataset.type = 'all';
+    allButton.addEventListener('click', () => filterByType(type));
+    typeFilter.appendChild(button);
+
+    types.forEach(type => {
+        const button = document.createElement('button');
+        button.className = 'type.btn';
+        button.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        button.style.background = typeColors[type];
+        button.dataset.type = type;
+        button.addEventListener('click', () => filterByType(type));
+        typeFilter.appendChild(button);
+
+    });
+}
 
 async function loadPokemon(){
     showLoading();
