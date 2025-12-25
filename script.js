@@ -71,6 +71,37 @@ let pokemonData = [];
 let displayPokemon = [];
 let currentPokemonDetail = null;
 
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTypeFilters();
+    loadPokemon();
+
+
+    searchButton.addEventListener('click', handleSearch);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSearch();
+    });
+    resetButton.addEventListener('click', resetFilters);
+    prevButton.addEventListener('click', () => changePage(-1));
+    nextButton.addEventListener('click', () => changePage(+1));
+
+    closeCard.addEventListener('click', () => {
+        card.classList.remove('active');
+    });
+
+    card.addEventListener('click', (e) => {
+        if (e.target === card) {
+            card.classList.remove('active');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && card.classList.contains('active')) {
+            card.classList.remove('active');
+        }
+    });
+});
+
+
 
 async function loadPokemon(){
     showLoading();
