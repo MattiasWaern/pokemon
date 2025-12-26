@@ -420,11 +420,11 @@ async function handleSearch(){
     try {
         let searchUrl;
         if(!isNaN(searchTerm)){
-            searchUrl = `https://pokeapi.co/api/v2/pokemon/${parseInt(searchTerm)}`};
-        else {
-         
+            searchUrl = `https://pokeapi.co/api/v2/pokemon/${parseInt(searchTerm)}`;
+        }  else {
         searchUrl = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
     }
+       
 
     const response = await fetch(searchUrl);
 
