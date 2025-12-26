@@ -1,8 +1,6 @@
-const { current } = require("@reduxjs/toolkit");
-
 // DOM Elements
 const searchInput = document.getElementById('search-input');
-const searchButton = document.getElementById('search-button');
+const searchButton = document.getElementById('search-btn');
 const resultsInfo = document.getElementById('results-info');
 const typeFilter = document.getElementById('type-filter');
 const resetButton = document.getElementById('reset-btn');
@@ -15,7 +13,7 @@ const errorText = document.getElementById('error-text');
 const loading = document.getElementById('loading');
 
 // Card Elements
-const card = document.getElementById('card');
+const card = document.getElementById('pokemon-card');
 const closeCard = document.getElementById('close-card');
 const cardName = document.getElementById('card-name');
 const cardId = document.getElementById('card-id');
@@ -111,12 +109,12 @@ function initializeTypeFilters() {
     allButton.textContent = 'All';
     allButton.style.background = 'var(--primary-color)';
     allButton.dataset.type = 'all';
-    allButton.addEventListener('click', () => filterByType(type));
-    typeFilter.appendChild(button);
+    allButton.addEventListener('click', () => filterByType('all'));
+    typeFilter.appendChild(allButton);
 
     types.forEach(type => {
         const button = document.createElement('button');
-        button.className = 'type.btn';
+        button.className = 'type-btn';
         button.textContent = type.charAt(0).toUpperCase() + type.slice(1);
         button.style.background = typeColors[type];
         button.dataset.type = type;
@@ -153,14 +151,14 @@ async function loadPokemon(){
     } catch (error) {
         showError('Failed to load Pokemon data. Please try again.');
         hideLoading();
-        console.error(err);
+        console.error(error);
     }
 }
 
 function updatePokemonGrid() {
     pokemonGrid.innerHTML = '';
 
-    if(displayedPokemon.length === 0) {
+    if(displayPokemon.length === 0) {
         pokemonGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem;">No Pokemon found matching your search.</div>';
 
         return;
@@ -174,7 +172,7 @@ function updatePokemonGrid() {
 
 function createPokemonCard(pokemon){
     const card = document.createElement('div');
-    card.classname = 'pokemon-card';
+    card.className = 'pokemon-card';
 
     const pokemonId = pokemon.id.toString().padStart(3, '0');
 
@@ -188,7 +186,7 @@ function createPokemonCard(pokemon){
     </div>
 
     <div class="pokemon-image">
-        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_defualt}" alt=${pokemon.name}">
+        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" alt=${pokemon.name}">
     </div>
 
     <div class="pokemon-types">
@@ -233,7 +231,7 @@ async function showPokemonDetail(pokemon){
 
         const img = cardImage.querySelector('img') || document.createElement('img');
 
-        img.src = pokemon.sprites.otger['official-artwork'].front_default || pokemon.sprites.front_defualt;
+        img.src = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
         img.alt = pokemon.name;
         if (!cardImage.querySelector('img')) {
             cardImage.appendChild(img);
@@ -243,7 +241,7 @@ async function showPokemonDetail(pokemon){
         pokemon.types.forEach(typeInfo => {
             const typeName = typeInfo.type.name;
             const typeBadge = document.createElement('span');
-            typeBadge.classname = 'type-badge';
+            typeBadge.className = 'type-badge';
             typeBadge.textContent = typeName;
             typeBadge.style.background = typeColors[typeName];
             cardTypes.appendChild(typeBadge);
@@ -301,7 +299,7 @@ async function showPokemonDetail(pokemon){
         const movesToShow = pokemon.moves.slice(0, 10);
         movesToShow.forEach(moveInfo => {
             const move = document.createElement('span');
-            move.classname = 'move';
+            move.className = 'move';
 
             const levelUpMethod = moveInfo.version_group_details.find(
                 detail => detail.move_learn_method.name === 'level-up'
@@ -346,7 +344,7 @@ async function updateEvolutionChain(speciesUrl){
             evolutionChain.push({
                 name: currentEvolution.species.name,
                 id: pokemonId,
-                image: pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_defualt
+                image: pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default
             });
 
             currentEvolution = currentEvolution.evolves_to[0];
@@ -396,7 +394,7 @@ async function updateEvolutionChain(speciesUrl){
             if (index < evolutionChain.length - 1) {
                 const arrow = document.createElement('div');
                 arrow.className = 'evolution-arrow';
-                arrow.innerHTML = '<i class"fas fa-arrow-right"></i>';
+                arrow.innerHTML = '<i class="fas fa-arrow-right"></i>';;
                 cardEvolution.appendChild(arrow);
             }
         });
@@ -407,7 +405,7 @@ async function updateEvolutionChain(speciesUrl){
 }
 
 async function handleSearch(){
-    const searchTerm = searchInput.ariaValueMax.trim().toLocaleLowerCase();
+    const searchTerm = searchInput.value.trim().toLocaleLowerCase();
 
     if(!searchTerm){
         resetFilters();
@@ -465,6 +463,60 @@ function filterByType(type){
 
     updatePokemonGrid();
     updateResultsInfo();
+}
+
+function updateTypeFilterButtons(){
+    const buttons = typeFilter.querySelectorAll('.type-btn');
+    buttons.forEach(button => {
+        if(button.dataset.type === currentTypeFilter){
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
+function resetFilters(){
+    searchInput.value = '';
+    currentTypeFilter = 'all';
+    updateTypeFilterButtons();
+    loadPokemon();
+}
+
+function changePage(direction){
+    const newPage = currentPage + direction;
+
+    if(newPage < 1 || newPage > totalPages) {
+        return;
+    }
+
+    currentPage = newPage;
+    loadPokemon();
+}
+
+function updatePagination(isSearch = false){
+    if(isSearch){
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        pageInfo.textContent = "Search Results";
+    } else {
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+}
+
+function updateResultsInfo(customText = null){
+    if (customText){
+        resultsInfo.textContent = customText;
+        return;
+    }
+
+    if(currentTypeFilter === 'all'){
+        resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
+    } else {
+        resultsInfo.textContent = `Showing ${displayPokemon.length} ${currentTypeFilter} type pokemon`;
+    }
 }
 
 function showLoading() {
