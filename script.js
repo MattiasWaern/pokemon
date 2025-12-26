@@ -19,7 +19,7 @@ const cardName = document.getElementById('card-name');
 const cardId = document.getElementById('card-id');
 const cardImage = document.getElementById('card-image');
 const cardTypes = document.getElementById('card-types');
-const cardHeight = document.getElementById('card-weight');
+const cardHeight = document.getElementById('card-height');
 const cardWeight = document.getElementById('card-weight');
 const cardExp = document.getElementById('card-exp');
 const cardAbilities = document.getElementById('card-abilities');
@@ -186,7 +186,7 @@ function createPokemonCard(pokemon){
     </div>
 
     <div class="pokemon-image">
-        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" alt=${pokemon.name}">
+        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" alt="${pokemon.name}">
     </div>
 
     <div class="pokemon-types">
@@ -291,7 +291,7 @@ async function showPokemonDetail(pokemon){
             statItem.appendChild(statName);
             statItem.appendChild(statBarContainer);
             statItem.appendChild(statValueElement);
-            statItem.appendChild(statItem);
+            cardStats.appendChild(statItem);
 
         });
 
@@ -306,7 +306,7 @@ async function showPokemonDetail(pokemon){
             );
 
             if(levelUpMethod) {
-                move.innerHTML = `<span class="move-level>Lv.${levelUpMethod.level_learned_at}</span> ${moveInfo.move.name.replace('-', ' ')}`;
+                move.innerHTML = `<span class="move-level">Lv.${levelUpMethod.level_learned_at}</span> ${moveInfo.move.name.replace('-', ' ')}`;
 
             } else {
                 move.textContent = moveInfo.move.name.replace('-', ' ');
@@ -389,7 +389,7 @@ async function updateEvolutionChain(speciesUrl){
 
             evolutionItem.appendChild(evolutionImage);
             evolutionItem.appendChild(evolutionName);
-            evolutionItem.appendChild(evolutionItem);
+            cardEvolution.appendChild(evolutionItem);
 
             if (index < evolutionChain.length - 1) {
                 const arrow = document.createElement('div');
@@ -405,7 +405,7 @@ async function updateEvolutionChain(speciesUrl){
 }
 
 async function handleSearch(){
-    const searchTerm = searchInput.value.trim().toLocaleLowerCase();
+    const searchTerm = searchInput.value.trim().toLowerCase();
 
     if(!searchTerm){
         resetFilters();
@@ -496,12 +496,12 @@ function changePage(direction){
 
 function updatePagination(isSearch = false){
     if(isSearch){
-        prevBtn.disabled = true;
-        nextBtn.disabled = true;
+        prevButton.disabled = true;
+        nextButton.disabled = true;
         pageInfo.textContent = "Search Results";
     } else {
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === totalPages;
         pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
     }
 }
