@@ -421,7 +421,8 @@ async function handleSearch(){
         let searchUrl;
         if(!isNaN(searchTerm)){
             searchUrl = `https://pokeapi.co/api/v2/pokemon/${parseInt(searchTerm)}`};
-    } else {
+        else {
+         
         searchUrl = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
     }
 
@@ -432,6 +433,38 @@ async function handleSearch(){
     }
 
     const pokemon = await response.json();
+
+    pokemonData = [pokemon];
+    displayPokemon = [pokemon];
+    currentTypeFilter = 'all';
+
+    updateTypeFilterButtons();
+    updatePokemonGrid();
+    updateResultsInfo(`Search result for "${searchTerm}"`);
+    updatePagination(true);
+    hideLoading();
+    } catch (err) {
+        showError(`Pokémon "${searchTerm}" not found. Try another name or ID.`);
+
+        hideLoading();
+    }
+}
+
+function filterByType(type){
+    currentTypeFilter = type;
+
+    updateTypeFilterButtons();
+
+    if(type === 'all'){
+        displayPokemon = pokemonData;
+    } else {
+        displayPokemon = pokemonData.filter(pokemon => 
+            pokemon.types.some(t => t.type.name === type)
+        );
+    }
+
+    updatePokemonGrid();
+    updateResultsInfo();
 }
 
 function showLoading() {
