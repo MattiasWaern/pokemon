@@ -219,7 +219,69 @@ function createPokemonCard(pokemon){
     return card;
 }
 
+async function showPokemonDetail(pokemon){
+    showLoading();
+    currentPokemonDetail = pokemon;
 
+    try {
+        cardName.textContent = pokemon.name;
+        cardId.textContent = `#${pokemon.id.toString().padStart(3, '0')}`
+
+        const img = cardImage.querySelector('img') || document.createElement('img');
+
+        img.src = pokemon.sprites.otger['official-artwork'].front_default || pokemon.sprites.front_defualt;
+        img.alt = pokemon.name;
+        if (!cardImage.querySelector('img')) {
+            cardImage.appendChild(img);
+        }
+
+        cardTypes.innerHTML = '';
+        pokemon.types.forEach(typeInfo => {
+            const typeName = typeInfo.type.name;
+            const typeBadge = document.createElement('span');
+            typeBadge.classname = 'type-badge';
+            typeBadge.textContent = typeName;
+            typeBadge.style.background = typeColors[typeName];
+            cardTypes.appendChild(typeBadge);
+        });
+
+        cardHeight.textContent  = `${pokemon.height / 10}m`;
+        cardWeight.textContent  = `${pokemon.weight / 10}kg`;
+        cardExp.textContent  = pokemon.base_experience || 'N/A';
+
+
+        cardAbilities.innerHTML = '';
+        pokemon.abilities.forEach(abilityInfo => {
+            const ability = document.createElement('span');
+            ability.className = `ability ${abilityInfo.is_hidden ? 'hidden-ability' : ''}`;
+            ability.textContent = abilityInfo.ability.name.replace('-', ' ');
+
+            if(abilityInfo.is_hidden) {
+                ability.title = 'Hidden Ability';
+            }
+            cardAbilities.appendChild(ability);
+        });
+
+        cardStats.innerHTML = '';
+        pokemon.stats.forEach(statInfo => {
+            const statItem = document.createElement('div');
+            statItem.className = 'stat-item';
+
+            const statName = document.createElement('span');
+            statName.className = 'stat-name';
+            statName.textContent = statInfo.stat.name.replace('-', ' ');
+
+            const statBarContainer = document.createElement('div');
+            statBarContainer.className = 'stat-bar-container';
+
+            const statBar = document.createElement('div');
+            statBar.className = 'stat-bar';
+            const statValue = statInfo.base_stat;
+            const percentage = Math.min(100, (statValue / 255) * 100);
+            statBar.style.width = ${percentage
+        })
+    }
+}
 
 
 
