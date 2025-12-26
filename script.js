@@ -219,6 +219,8 @@ function createPokemonCard(pokemon){
     return card;
 }
 
+
+//Show detailed card for pokemon..
 async function showPokemonDetail(pokemon){
     showLoading();
     currentPokemonDetail = pokemon;
@@ -278,8 +280,48 @@ async function showPokemonDetail(pokemon){
             statBar.className = 'stat-bar';
             const statValue = statInfo.base_stat;
             const percentage = Math.min(100, (statValue / 255) * 100);
-            statBar.style.width = ${percentage
-        })
+            statBar.style.width = `${percentage}%`;
+            statBar.style.background = statColors[statInfo.stat.name] || '#4a90e2';
+
+            const statValueElement = document.createElement('span');
+            statValueElement.className = 'stat-value-card';
+            statValueElement.textContent = statValue;
+
+            statBarContainer.appendChild(statBar);
+            statItem.appendChild(statName);
+            statItem.appendChild(statBarContainer);
+            statItem.appendChild(statValueElement);
+            statItem.appendChild(statItem);
+
+        });
+
+        cardMoves.innerHTML = '';
+        const movesToShow = pokemon.moves.slice(0, 10);
+        movesToShow.forEach(moveInfo => {
+            const move = document.createElement('span');
+            move.classname = 'move';
+
+            const levelUpMethod = moveInfo.version_group_details.find(
+                detail => detail.move_learn_method.name === 'level-up'
+            );
+
+            if(levelUpMethod) {
+                move.innerHTML = `<span class="move-level>Lv.${levelUpMethod.level_learned_at}</span> ${moveInfo.move.name.replace('-', ' ')}`;
+
+            } else {
+                move.textContent = moveInfo.move.name.replace('-', ' ');
+            }
+
+            cardMoves.appendChild(move);
+        });
+
+        await updateEvolutionChain(pokemon.species.url);
+
+        card.classList.add('active');
+        hideLoading();
+    } catch (err) {
+        console.error('Error loading Pokemon details:', err);
+        hideLoading();
     }
 }
 
