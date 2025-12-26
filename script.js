@@ -18,7 +18,7 @@ const closeCard = document.getElementById('close-card');
 const cardName = document.getElementById('card-name');
 const cardId = document.getElementById('card-id');
 const cardImage = document.getElementById('card-image');
-const cardTypes = document.getElementById('card-types');
+const modalTypes = document.getElementById('card-types');
 const cardHeight = document.getElementById('card-height');
 const cardWeight = document.getElementById('card-weight');
 const cardExp = document.getElementById('card-exp');
@@ -180,7 +180,7 @@ function createPokemonCard(pokemon){
 
     card.innerHTML = 
     `
-    <div class="card-header">
+    <div class="pokemon-card-header">
         <span class="pokemon-id">#${pokemonId}</span>
         <h3 class="pokemon-name">${pokemon.name}</h3>
     </div>
@@ -210,6 +210,7 @@ function createPokemonCard(pokemon){
             <div class="stat-label">HP</div>
             <div class="stat-value">${pokemon.stats[0].base_stat}</div>
         </div>
+    </div>
     `;
 
     card.addEventListener('click', () => {
@@ -237,14 +238,14 @@ async function showPokemonDetail(pokemon){
             cardImage.appendChild(img);
         }
 
-        cardTypes.innerHTML = '';
+        modalTypes.innerHTML = '';
         pokemon.types.forEach(typeInfo => {
             const typeName = typeInfo.type.name;
             const typeBadge = document.createElement('span');
             typeBadge.className = 'type-badge';
             typeBadge.textContent = typeName;
             typeBadge.style.background = typeColors[typeName];
-            cardTypes.appendChild(typeBadge);
+            modalTypes.appendChild(typeBadge);
         });
 
         cardHeight.textContent  = `${pokemon.height / 10}m`;
