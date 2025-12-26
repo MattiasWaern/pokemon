@@ -1,3 +1,5 @@
+const { current } = require("@reduxjs/toolkit");
+
 // DOM Elements
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
@@ -325,7 +327,84 @@ async function showPokemonDetail(pokemon){
     }
 }
 
+async function updateEvolutionChain(speciesUrl){
+    try {
+        const speciesResponse = await fetch(speciesUrl);
+        const speciesData = await speciesResponse.json();
+        const evolutionResponse = await fetch(speciesData.evolution_chain.url);
+        const evolutionData = await evolutionResponse.json();
 
+        const evolutionChain = [];
+        let currentEvolution = evolutionData.chain;
+
+        while (currentEvolution) {
+            const pokemonId = currentEvolution.species.url.split('/').filter(Boolean).pop();
+
+            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+            const pokemonData = await pokemonResponse.json();
+
+            evolutionChain.push({
+                name: currentEvolution.species.name,
+                id: pokemonId,
+                image: pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_defualt
+            });
+
+            currentEvolution = currentEvolution.evolves_to[0];
+        }
+
+        cardEvolution.innerHTML = '';
+
+        if(evolutionChain.length < 1) {
+            cardEvolution.innerHTML = '<p>This pokemon does not evolve LOL!!.</p>';
+
+            return;
+        }
+
+        evolutionChain.forEach((pokemon, index) => {
+            const evolutionItem = document.createElement('div');
+            evolutionItem.className = 'evolution-item';
+
+            evolutionItem.addEventListener('click', async () => {
+                showLoading();
+                try {
+                    const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}`);
+                    const pokemonData = await pokemonResponse.json();
+                    showPokemonDetail(pokemonData);
+                    
+                } catch(err){
+                    console.error('Error loading evolution Pokemon', err);
+                    hideLoading();
+                }
+            });
+
+            const evolutionImage = document.createElement('div');
+            evolutionImage.className = 'evolution-image';
+
+            const img = document.createElement('img');
+            img.src = pokemon.image;
+            img.alt = pokemon.name;
+            evolutionImage.appendChild(img);
+
+            const evolutionName = document.createElement('div');
+            evolutionName.className = 'evolution-name';
+            evolutionName.textContent = pokemon.name;
+
+            evolutionItem.appendChild(evolutionImage);
+            evolutionItem.appendChild(evolutionName);
+            evolutionItem.appendChild(evolutionItem);
+
+            if (index < evolutionChain.length - 1) {
+                const arrow = document.createElement('div');
+                arrow.className = 'evolution-arrow';
+                arrow.innerHTML = '<i class"fas fa-arrow-right"></i>';
+                cardEvolution.appendChild(arrow);
+            }
+        });
+    } catch (err) {
+        console.error('Error loading evolutionchain:', err);
+        cardEvolution.innerHTML = '<p>Evolution data not available. </p>';
+    }
+}
 
 
 
