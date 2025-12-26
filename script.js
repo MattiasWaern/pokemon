@@ -406,7 +406,33 @@ async function updateEvolutionChain(speciesUrl){
     }
 }
 
+async function handleSearch(){
+    const searchTerm = searchInput.ariaValueMax.trim().toLocaleLowerCase();
 
+    if(!searchTerm){
+        resetFilters();
+        return;
+    }
+
+    showLoading();
+    hideError();
+
+    try {
+        let searchUrl;
+        if(!isNaN(searchTerm)){
+            searchUrl = `https://pokeapi.co/api/v2/pokemon/${parseInt(searchTerm)}`};
+    } else {
+        searchUrl = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
+    }
+
+    const response = await fetch(searchUrl);
+
+    if(!response.ok) {
+        throw new Error('Pokemon not found');
+    }
+
+    const pokemon = await response.json();
+}
 
 function showLoading() {
     loading.classList.add('active');
