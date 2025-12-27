@@ -112,6 +112,14 @@ function initializeTypeFilters() {
     allButton.addEventListener('click', () => filterByType('all'));
     typeFilter.appendChild(allButton);
 
+    const favoritesButton = document.createElement('button');
+    favoritesButton.className = 'type-btn';
+    favoritesButton.textContent = '⭐ Favorites';
+    favoritesButton.style.background = '#ff6b6b';
+    favoritesButton.dataset.type = 'favorites';
+    favoritesButton.addEventListener('click', () => filterByFavorites());
+    typeFilter.appendChild(favoritesButton);
+
     types.forEach(type => {
         const button = document.createElement('button');
         button.className = 'type-btn';
@@ -123,6 +131,42 @@ function initializeTypeFilters() {
 
     });
 }
+
+async function filterByFavorites(){
+    const favorites = getFavorites();
+
+    if(favorites.length === 0) {
+        showError('You have no favorite pokemon yet!!')
+        return;
+    }
+
+    showLoading();
+
+
+    try {
+        const favoritePokemon = await Promise.all(
+            favorites.map(async (id) => {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                return response.json();
+            })
+        );
+
+        pokemonData = favoritePokemon;
+        displayPokemon = favoritePokemon;
+        currentTypeFilter = 'favorites';
+
+        updateTypeFilterButtons();
+        updatePokemonGrid();
+        updateResultsInfo(`Showing ${favoritePokemon.length} favorite pokemon`);
+        updatePagination(true);
+        hideLoading();
+    } catch (err){
+        showError('Failed to load favorite pokemon');
+        hideLoading();
+    }
+}
+
+
 
 async function loadPokemon(){
     showLoading();
@@ -177,13 +221,16 @@ function createPokemonCard(pokemon){
     const pokemonId = pokemon.id.toString().padStart(3, '0');
     const primaryType = pokemon.types[0].type.name;
 
-    
+    const isFavorite = checkIfFavorite(pokemon.id);
 
     card.innerHTML = 
     `
     <div class="pokemon-card-header">
         <span class="pokemon-id">#${pokemonId}</span>
         <h3 class="pokemon-name">${pokemon.name}</h3>
+        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
+            <i class="fas fa-heart"></i>
+        </button>
     </div>
 
     <div class="pokemon-image">
@@ -215,6 +262,13 @@ function createPokemonCard(pokemon){
         </div>
     </div>
     `;
+
+        const favoriteBtn = card.querySelector('.favorite-btn');
+            favoriteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(pokemon.id);
+                favoriteBtn.classList.toggle('active');
+            });
 
     card.addEventListener('click', () => {
         showPokemonDetail(pokemon);
@@ -521,7 +575,9 @@ function updateResultsInfo(customText = null){
 
     if(currentTypeFilter === 'all'){
         resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
-    } else {
+    } 
+    
+    else {
         resultsInfo.textContent = `Showing ${displayPokemon.length} ${currentTypeFilter} type pokemon`;
     }
 }
@@ -548,4 +604,31 @@ function pageTop(){
         top: 0,
         behavior: 'smooth'
     });
+}
+
+
+function getFavorites(){
+    const favorites = localStorage.getItem('pokemonFavorites');
+    return favorites ? JSON.parse(favorites) : [];
+}
+
+function saveFavorites(favorites){
+    localStorage.setItem('pokemonFavorites', JSON.stringify(favorites));
+}
+
+function checkIfFavorite(pokemonId){
+    const favorites = getFavorites();
+    return favorites.includes(pokemonId);
+}
+
+function toggleFavorite(pokemonId){
+    let favorites = getFavorites();
+
+    if(favorites.includes(pokemonId)) {
+        favorites = favorites.filter(id => id !== pokemonId);
+    } else {
+        favorites.push(pokemonId);
+    }
+
+    saveFavorites(favorites);
 }
