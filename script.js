@@ -175,8 +175,9 @@ function createPokemonCard(pokemon){
     card.className = 'pokemon-card';
 
     const pokemonId = pokemon.id.toString().padStart(3, '0');
-
     const primaryType = pokemon.types[0].type.name;
+
+    
 
     card.innerHTML = 
     `
@@ -186,7 +187,9 @@ function createPokemonCard(pokemon){
     </div>
 
     <div class="pokemon-image">
-        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" alt="${pokemon.name}">
+        <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name}.gif" 
+        onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
+        alt="${pokemon.name}">
     </div>
 
     <div class="pokemon-types">
@@ -369,6 +372,7 @@ async function updateEvolutionChain(speciesUrl){
                     const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}`);
                     const pokemonData = await pokemonResponse.json();
                     showPokemonDetail(pokemonData);
+                    console.log('clicked evolution');
                     
                 } catch(err){
                     console.error('Error loading evolution Pokemon', err);
