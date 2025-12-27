@@ -65,7 +65,7 @@ const statColors = {
 // App state
 
 let currentPage = 1;
-let totalPages = 33; 
+let totalPages = 44; 
 let currentTypeFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
@@ -129,9 +129,9 @@ async function loadPokemon(){
     hideError();
 
     try{
-        const offset = (currentPage - 1) * 40;
+        const offset = (currentPage - 1) * 30;
 
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=40&offset=${offset}`);
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=30&offset=${offset}`);
         const data = await response.json();
 
         const detailedPokemon = await Promise.all(
@@ -493,6 +493,8 @@ function changePage(direction){
 
     currentPage = newPage;
     loadPokemon();
+    resetFilters();
+    pageTop();
 }
 
 function updatePagination(isSearch = false){
@@ -535,4 +537,11 @@ function showError(message){
 
 function hideError() {
     error.classList.remove('active');
+}
+
+function pageTop(){
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
