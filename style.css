@@ -58,7 +58,7 @@ header{
     padding: 20px 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     top: 0;
-    position: relative;
+    position: sticky;
     z-index: 1000;
 }
 
