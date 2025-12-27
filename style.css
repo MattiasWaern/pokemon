@@ -160,6 +160,7 @@ header{
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .filter-label{
@@ -247,12 +248,12 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(250, 7, 7, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .pokemon-id{
-    background: rgba(0, 0, 0, 0.3);
+    background: #5d145170;
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -286,7 +287,7 @@ header{
 
 .pokemon-stats {
     padding: 15px 20px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 64, 64, 0.158);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;

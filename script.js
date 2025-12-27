@@ -65,7 +65,7 @@ const statColors = {
 // App state
 
 let currentPage = 1;
-let totalPages = 65;
+let totalPages = 33; 
 let currentTypeFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
@@ -129,9 +129,9 @@ async function loadPokemon(){
     hideError();
 
     try{
-        const offset = (currentPage - 1) * 20;
+        const offset = (currentPage - 1) * 40;
 
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`);
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=40&offset=${offset}`);
         const data = await response.json();
 
         const detailedPokemon = await Promise.all(
