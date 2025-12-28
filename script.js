@@ -51,6 +51,20 @@ const typeColors = {
     flying: 'var(--flying)'
 };
 
+// Genarations
+const generations = [
+    { name: 'Gen I', start: 1, end: 151 },
+    { name: 'Gen II', start: 152, end: 251 },
+    { name: 'Gen III', start: 252, end: 386 },
+    { name: 'Gen IV', start: 387, end: 493 },
+    { name: 'Gen V', start: 494, end: 649 },
+    { name: 'Gen VI', start: 650, end: 721 },
+    { name: 'Gen VII', start: 722, end: 809 },
+    { name: 'Gen VIII', start: 810, end: 905 },
+    { name: 'Gen IX', start: 906, end: 1025 },
+]
+
+
 // Stat colors 
 
 const statColors = {
@@ -67,6 +81,7 @@ const statColors = {
 let currentPage = 1;
 let totalPages = 44; 
 let currentTypeFilter = 'all';
+let currentGenFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
 let currentPokemonDetail = null;
