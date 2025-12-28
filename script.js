@@ -301,7 +301,7 @@ function createPokemonCard(pokemon){
 
     card.innerHTML = 
     `
-      <div class="pokemon-card-header">
+    <div class="pokemon-card-header">
         <div class="pokemon-id-group">
             <span class="pokemon-id">#${pokemonId}</span>
             ${genName ? `<span class="gen-badge">${genName}</span>` : ''}
@@ -315,7 +315,7 @@ function createPokemonCard(pokemon){
         </div>
     </div>
 
-   <div class="pokemon-image">
+    <div class="pokemon-image">
         <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
         data-normal = "https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
         data-shiny = "https://play.pokemonshowdown.com/sprites/ani-shiny/${pokemon.name.toLowerCase()}.gif"
@@ -604,6 +604,8 @@ async function handleSearch(){
         return;
     }
 
+
+    
     showLoading();
     hideError();
 
@@ -666,6 +668,20 @@ function parseSearchQueary(query){
             };
         result.generation = genMap[genValue];
         }
+
+        const types = Object.keys(typeColors);
+        for (const type of types){
+            if (lowerQuery.includes(type)){
+                result.type = type;
+                break;
+            }
+        }
+
+        if(result.generation === null && result.type === null){
+            result.pokemonName = query.trim();
+        }
+
+        return result;
 }
 
 
