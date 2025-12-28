@@ -264,12 +264,10 @@ header{
 }
 
 .gen-badge {
-    background: rgba(74, 144, 226, 0.2);
-    color: var(--primary-color);
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    background: #5d145170;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
     border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
