@@ -301,14 +301,72 @@ header{
     padding: 10px;
 }
 
+.shiny-toggle {
+    margin-bottom: 5px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shiny-toggle:hover {
+    background: rgba(255, 215, 0, 0.4);
+    transform: scale(1.1) rotate(20deg);
+    border-color: rgba(255, 215, 0, 0.8);
+}
+
+.shiny-toggle.active {
+    background: rgba(255, 140, 0, 0.4);
+    border-color: rgba(255, 140, 0, 0.8);
+    animation: sparkle 1s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+}
+
+.shiny-toggle-modal{
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #181818, #ffed4e);
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-size: 1.2rem;
+}
+
+.shiny-toggle-modal:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+}
+
+.shiny-toggle-modal.active{
+    background: linear-gradient(135deg, #ff8c00, #ffa500);
+    padding: 8px 16px;
+}
+
 .pokemon-image img {
     height: 100%;
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
     transition: all 0.3s ease;
 }
 
-.pokemon-card:hover .pokemon-image img{
+.pokemon-card:hover .shiny-toggle .pokemon-image img{
     transform: scale(1.1);
+    opacity: 1;
 }
 
 .pokemon-stats {

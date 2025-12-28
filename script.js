@@ -238,15 +238,18 @@ function createPokemonCard(pokemon){
     <div class="pokemon-card-header">
         <span class="pokemon-id">#${pokemonId}</span>
         <h3 class="pokemon-name">${pokemon.name}</h3>
+        <button class="shiny-toggle" title="Toggle Shiny">✨</button>
         <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
             <i class="fas fa-heart"></i>
         </button>
     </div>
 
    <div class="pokemon-image">
-        <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.gif"
-            onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
-            alt="${pokemon.name}">  
+        <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
+        data-normal = "https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
+        data-shiny = "https://play.pokemonshowdown.com/sprites/ani-shiny/${pokemon.name.toLowerCase()}.gif"
+        onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
+        alt="${pokemon.name}">  
     </div>
 
     
@@ -275,12 +278,32 @@ function createPokemonCard(pokemon){
     </div>
     `;
 
-        const favoriteBtn = card.querySelector('.favorite-btn');
-            favoriteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleFavorite(pokemon.id);
-                favoriteBtn.classList.toggle('active');
-            });
+    const favoriteBtn = card.querySelector('.favorite-btn');
+        favoriteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFavorite(pokemon.id);
+            favoriteBtn.classList.toggle('active');
+        });
+
+    const shinyBtn = card.querySelector('.shiny-toggle');
+    const img = card.querySelector('.pokemon-image img');
+    let isShiny = false;
+
+    shinyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isShiny = !isShiny;
+
+        if(isShiny){
+            img.src = img.dataset.shiny;
+            shinyBtn.classList.add('active');
+            shinyBtn.textContent = '⭐';
+        } else {
+            img.src = img.dataset.normal;
+            shinyBtn.classList.remove('active');
+            shinyBtn.textContent = '✨';
+        }
+    });
+
 
     card.addEventListener('click', () => {
         showPokemonDetail(pokemon);
@@ -300,12 +323,39 @@ async function showPokemonDetail(pokemon){
         cardId.textContent = `#${pokemon.id.toString().padStart(3, '0')}`
 
         const img = cardImage.querySelector('img') || document.createElement('img');
-
-        img.src = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+        const normalSprite = `${pokemon.sprites.other['official-artwork'].front_default}`;
+        const shinySprite = `${pokemon.sprites.other['official-artwork'].front_shiny}`;
+        
+        img.src = normalSprite;
         img.alt = pokemon.name;
+        img.dataset.normal = normalSprite;
+        img.dataset.shiny = shinySprite;
+
         if (!cardImage.querySelector('img')) {
             cardImage.appendChild(img);
         }
+
+        let shinyToggle = cardImage.querySelector('.shiny-toggle-modal');
+        if(!shinyToggle){
+            shinyToggle = document.createElement('button');
+            shinyToggle.className = 'shiny-toggle-modal';
+            shinyToggle.textContent = '✨ Toggle Shiny';
+            cardImage.appendChild(shinyToggle);
+        }
+
+        let isShiny = false;
+        shinyToggle.onclick = () => {
+            isShiny = !isShiny;
+            if(isShiny){
+                img.src = shinySprite;
+                shinyToggle.textContent = '⭐ Normal'
+                shinyToggle.classList.add('active');
+            } else {
+                img.src = normalSprite;
+                shinyToggle.textContent = '✨ Toggle Shiny'
+                shinyToggle.classList.remove('active');
+            }
+        };
 
         modalTypes.innerHTML = '';
         pokemon.types.forEach(typeInfo => {
