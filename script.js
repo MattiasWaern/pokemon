@@ -648,6 +648,24 @@ function parseSearchQueary(query){
         type: null,
         pokemonName: null
     };
+
+    const genMatch = lowerQuery.match(/gen(?:eration)?\s*([1-9]|i{1,3}|iv|v|vi{1,3}|ix)/i);
+        if(genMatch){
+            const genValue = genMatch[1].toLowerCase();
+        // Convert roman numerals or numbers to index very fun...
+            const genMap = {
+                '1': 0, 'i': 0,
+                '2': 1, 'ii': 1,
+                '3': 2, 'iii': 2,
+                '4': 3, 'iv': 3,
+                '5': 4, 'v': 4,
+                '6': 5, 'vi': 5,
+                '7': 6, 'vii': 6,
+                '8': 7, 'viii': 7,
+                '9': 8, 'ix': 8,
+            };
+        result.generation = genMap[genValue];
+        }
 }
 
 
