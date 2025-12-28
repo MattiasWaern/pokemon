@@ -352,6 +352,7 @@ header{
 }
 
 .shiny-toggle {
+    margin-left: 4px;
     margin-bottom: 5px;
     background: rgba(255, 215, 0, 0.2);
     border: 2px solid rgba(255, 215, 0, 0.5);

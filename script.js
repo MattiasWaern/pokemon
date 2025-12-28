@@ -640,6 +640,18 @@ async function handleSearch(){
     }
 }
 
+function parseSearchQueary(query){
+    const lowerQuery = query.toLowerCase().trim();
+
+    const result = {
+        generation: null,
+        type: null,
+        pokemonName: null
+    };
+}
+
+
+
 function filterByGeneration(genIndex) {
     currentGenFilter = genIndex;
     updateGenerationFilterButtons();
