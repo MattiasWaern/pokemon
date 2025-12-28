@@ -87,7 +87,7 @@ let displayPokemon = [];
 let currentPokemonDetail = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeTypeFilters();
+    initializeFilters();
     loadPokemon();
 
 
@@ -115,6 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function initializeFilters(){
+    initializeFilters();
+
+    initializeGenerationsFilters();
+}
 
 function initializeTypeFilters() {
     const types = Object.keys(typeColors);
@@ -144,6 +150,50 @@ function initializeTypeFilters() {
         button.addEventListener('click', () => filterByType(type));
         typeFilter.appendChild(button);
 
+    });
+}
+
+function initializeGenerationsFilters(){
+    const genFilterContainer = document.getElementById('gen-filter');
+
+    if(!genFilterContainer){
+        const container = document.createElement('div');
+        container.id = 'gen-filter';
+        container.className = 'filter-section';
+
+        const label = document.createElement('h3');
+        label.textContent = 'Generation';
+        label.className = 'filter-label';
+
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'gen-buttons';
+
+        container.appendChild(label)
+        container.appendChild(buttonsContainer);
+
+        const typeFilterSection = document.querySelector('.filter-section');
+        if(typeFilterSection && typeFilterSection.parentNode) {
+            typeFilterSection.parentNode.insertBefore(container, typeFilterSection.nextSibling);
+        }
+    }
+
+    const genButtons = document.querySelector('.gen-buttoins') || document.getElementById('gen-filter');
+
+    const allButton = document.createElement('button');
+    allButton.className = 'type-btn active';
+    allButton.textContent = 'All';
+    allButton.style.background = 'var(--primary-color)';
+    allButton.dataset.type = 'all';
+    allButton.addEventListener('click', () => filterByType('all'));
+    typeFilter.appendChild(allButton);
+
+    generations.forEach((gen, index) => {
+        const button = document.createElement('button');
+        button.className = 'gen-btn';
+        button.textContent = gen.name
+        button.dataset.gen = index;
+        button.addEventListener('click', () => filterByGeneration(index));
+        genButtons.appendChild(button);
     });
 }
 
