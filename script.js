@@ -51,6 +51,20 @@ const typeColors = {
     flying: 'var(--flying)'
 };
 
+// Genarations
+const generations = [
+    { name: 'Gen I', start: 1, end: 151 },
+    { name: 'Gen II', start: 152, end: 251 },
+    { name: 'Gen III', start: 252, end: 386 },
+    { name: 'Gen IV', start: 387, end: 493 },
+    { name: 'Gen V', start: 494, end: 649 },
+    { name: 'Gen VI', start: 650, end: 721 },
+    { name: 'Gen VII', start: 722, end: 809 },
+    { name: 'Gen VIII', start: 810, end: 905 },
+    { name: 'Gen IX', start: 906, end: 1025 },
+]
+
+
 // Stat colors 
 
 const statColors = {
@@ -67,12 +81,13 @@ const statColors = {
 let currentPage = 1;
 let totalPages = 44; 
 let currentTypeFilter = 'all';
+let currentGenFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
 let currentPokemonDetail = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeTypeFilters();
+    initializeFilters();
     loadPokemon();
 
 
@@ -100,6 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function initializeFilters(){
+    initializeTypeFilters();
+
+    initializeGenerationsFilters();
+}
 
 function initializeTypeFilters() {
     const types = Object.keys(typeColors);
@@ -132,6 +153,43 @@ function initializeTypeFilters() {
     });
 }
 
+function initializeGenerationsFilters(){
+    const genFilterContainer = document.getElementById('gen-filter');
+
+    if(!genFilterContainer){
+        const container = document.createElement('div');
+        container.id = 'gen-filter';
+        container.className = 'filter-section';
+
+        const label = document.createElement('h3');
+        label.textContent = 'Generation';
+        label.className = 'filter-label';
+
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'gen-buttons';
+
+        container.appendChild(label);
+        container.appendChild(buttonsContainer);
+
+        const typeFilterSection = document.querySelector('.filter-section');
+        if(typeFilterSection && typeFilterSection.parentNode) {
+            typeFilterSection.parentNode.insertBefore(container, typeFilterSection.nextSibling);
+        }
+    }
+
+    const genButtons = document.querySelector('.gen-buttons') || document.getElementById('gen-filter');
+
+    
+    generations.forEach((gen, index) => {
+        const button = document.createElement('button');
+        button.className = 'gen-btn';
+        button.textContent = gen.name;
+        button.dataset.gen = index;
+        button.addEventListener('click', () => filterByGeneration(index));
+        genButtons.appendChild(button);
+    });
+}
+
 async function filterByFavorites(){
     const favorites = getFavorites();
 
@@ -154,6 +212,8 @@ async function filterByFavorites(){
         pokemonData = favoritePokemon;
         displayPokemon = favoritePokemon;
         currentTypeFilter = 'favorites';
+
+        applyFilters();
 
         updateTypeFilterButtons();
         updatePokemonGrid();
@@ -221,6 +281,12 @@ function createPokemonCard(pokemon){
     const pokemonId = pokemon.id.toString().padStart(3, '0');
     const primaryType = pokemon.types[0].type.name;
 
+    const pokemonGen = generations.findIndex(gen =>
+        pokemon.id >= gen.start && pokemon.id <= gen.end
+    );
+
+    const genName = pokemonGen !== -1 ? generations[pokemonGen].name : '';
+
     const isFavorite = checkIfFavorite(pokemon.id);
 
     /* THE ANIMATIONS FOR "POKEMON-IMAGE"
@@ -235,13 +301,18 @@ function createPokemonCard(pokemon){
 
     card.innerHTML = 
     `
-    <div class="pokemon-card-header">
-        <span class="pokemon-id">#${pokemonId}</span>
+      <div class="pokemon-card-header">
+        <div class="pokemon-id-group">
+            <span class="pokemon-id">#${pokemonId}</span>
+            ${genName ? `<span class="gen-badge">${genName}</span>` : ''}
+        </div>
         <h3 class="pokemon-name">${pokemon.name}</h3>
-        <button class="shiny-toggle" title="Toggle Shiny">✨</button>
-        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
-            <i class="fas fa-heart"></i>
-        </button>
+        <div class="card-actions">
+            <button class="shiny-toggle" title="Toggle Shiny">✨</button>
+            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
     </div>
 
    <div class="pokemon-image">
@@ -569,10 +640,27 @@ async function handleSearch(){
     }
 }
 
+function filterByGeneration(genIndex) {
+    currentGenFilter = genIndex;
+    updateGenerationFilterButtons();
+    applyFilters();
+}
+
+function updateGenerationFilterButtons() {
+    const buttons = document.querySelectorAll('.gen-btn');
+    buttons.forEach(button => {
+        if (button.dataset.gen === String(currentGenFilter)) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
 function filterByType(type){
     currentTypeFilter = type;
-
     updateTypeFilterButtons();
+    applyFilters();
 
     if(type === 'all'){
         displayPokemon = pokemonData;
@@ -582,6 +670,27 @@ function filterByType(type){
         );
     }
 
+    updatePokemonGrid();
+    updateResultsInfo();
+}
+
+function applyFilters() {
+    let filtered = pokemonData;
+
+    if (currentGenFilter !== 'all') {
+        const gen = generations[currentGenFilter];
+        filtered = filtered.filter(pokemon => 
+            pokemon.id >= gen.start && pokemon.id <= gen.end
+        );
+    }
+    
+    if (currentTypeFilter !== 'all' && currentTypeFilter !== 'favorites') {
+        filtered = filtered.filter(pokemon => 
+            pokemon.types.some(t => t.type.name === currentTypeFilter)
+        );
+    }
+    
+    displayPokemon = filtered;
     updatePokemonGrid();
     updateResultsInfo();
 }
@@ -600,7 +709,12 @@ function updateTypeFilterButtons(){
 function resetFilters(){
     searchInput.value = '';
     currentTypeFilter = 'all';
+    currentGenFilter = 'all'; 
     updateTypeFilterButtons();
+    
+    const genButtons = document.querySelectorAll('.gen-btn');
+    genButtons.forEach(btn => btn.classList.remove('active'));
+    
     loadPokemon();
 }
 
@@ -635,12 +749,22 @@ function updateResultsInfo(customText = null){
         return;
     }
 
-    if(currentTypeFilter === 'all'){
-        resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
-    } 
+    let filterText = '';
     
-    else {
-        resultsInfo.textContent = `Showing ${displayPokemon.length} ${currentTypeFilter} type pokemon`;
+    if (currentGenFilter !== 'all') {
+        filterText += generations[currentGenFilter].name + ' ';
+    }
+
+    if (currentTypeFilter === 'favorites') {
+        filterText = (filterText ? filterText : '') + 'favorite ';
+    } else if (currentTypeFilter !== 'all') {
+        filterText += currentTypeFilter + ' type ';
+    }
+    
+    if (filterText) {
+        resultsInfo.textContent = `Showing ${displayPokemon.length} ${filterText}Pokemon`;
+    } else {
+        resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
     }
 }
 
