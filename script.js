@@ -634,10 +634,27 @@ async function handleSearch(){
     }
 }
 
+function filterByGeneration(genIndex){
+    currentGenFilter = genIndex;
+    updateGenerationsFilterButtons();
+    applyFilters();
+}
+
+function updateGenerationsFilterButtons(){
+    const buttons = document.querySelectorAll('.gen-btn');
+    buttons.forEach(buton => {
+        if(buttons.dataset.gen === String(currentGenFilter)){
+            buttons.classList.add('active');
+        } else {
+            buttons.classList.remove('active');
+        }
+    });
+}
+
 function filterByType(type){
     currentTypeFilter = type;
-
     updateTypeFilterButtons();
+    applyFilters();
 
     if(type === 'all'){
         displayPokemon = pokemonData;
@@ -647,6 +664,27 @@ function filterByType(type){
         );
     }
 
+    updatePokemonGrid();
+    updateResultsInfo();
+}
+
+function applyFilters(){
+    let filtered = pokemonData;
+
+    if(currentTypeFilter !== 'all'){
+        filtered = filtered.filter(pokemon =>
+            pokemon.types.some(t => t.type.name === currentTypeFilter)
+        );
+    }
+
+    if(currentGenFilter !== 'all') {
+        const gen = generations[currentGenFilter];
+        filtered = filtered.filter(pokemon => 
+            pokemon.id >= gen.start && pokemon.id <= gen.end
+        );
+    }
+
+    displayPokemon = filtered;
     updatePokemonGrid();
     updateResultsInfo();
 }
@@ -700,13 +738,19 @@ function updateResultsInfo(customText = null){
         return;
     }
 
-    if(currentTypeFilter === 'all'){
-        resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
-    } 
-    
-    else {
-        resultsInfo.textContent = `Showing ${displayPokemon.length} ${currentTypeFilter} type pokemon`;
-    }
+   let filterText = '';
+
+   if(currentGenFilter !== 'all'){
+    filterText += generations[currentGenFilter].name + ' ';
+   }
+
+   if(currentTypeFilter !== 'all'){
+    filterText += currentTypeFilter + ' type ';
+   }
+
+   if (filterText){
+        resultsInfo.textContent = `Showing ${displayPokemon.length} ${filterText}Pokemon`
+   }
 }
 
 function showLoading() {
