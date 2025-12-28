@@ -223,6 +223,16 @@ function createPokemonCard(pokemon){
 
     const isFavorite = checkIfFavorite(pokemon.id);
 
+    /* THE ANIMATIONS FOR "POKEMON-IMAGE"
+    <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.gif"
+        onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
+        alt="${pokemon.name}">
+
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${pokemon.id}.gif"
+        onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
+        alt="${pokemon.name}">
+    */ 
+
     card.innerHTML = 
     `
     <div class="pokemon-card-header">
@@ -233,11 +243,13 @@ function createPokemonCard(pokemon){
         </button>
     </div>
 
-    <div class="pokemon-image">
-        <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name}.gif" 
-        onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
-        alt="${pokemon.name}">
+   <div class="pokemon-image">
+        <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.gif"
+            onerror="this.src='${pokemon.sprites.other['official-artwork'].front_default}'"
+            alt="${pokemon.name}">  
     </div>
+
+    
 
     <div class="pokemon-types">
         ${pokemon.types.map(typeInfo => {
