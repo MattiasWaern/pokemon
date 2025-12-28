@@ -213,6 +213,8 @@ async function filterByFavorites(){
         displayPokemon = favoritePokemon;
         currentTypeFilter = 'favorites';
 
+        applyFilters();
+
         updateTypeFilterButtons();
         updatePokemonGrid();
         updateResultsInfo(`Showing ${favoritePokemon.length} favorite pokemon`);
@@ -672,22 +674,22 @@ function filterByType(type){
     updateResultsInfo();
 }
 
-function applyFilters(){
+function applyFilters() {
     let filtered = pokemonData;
 
-    if(currentTypeFilter !== 'all'){
-        filtered = filtered.filter(pokemon =>
-            pokemon.types.some(t => t.type.name === currentTypeFilter)
-        );
-    }
-
-    if(currentGenFilter !== 'all') {
+    if (currentGenFilter !== 'all') {
         const gen = generations[currentGenFilter];
         filtered = filtered.filter(pokemon => 
             pokemon.id >= gen.start && pokemon.id <= gen.end
         );
     }
-
+    
+    if (currentTypeFilter !== 'all' && currentTypeFilter !== 'favorites') {
+        filtered = filtered.filter(pokemon => 
+            pokemon.types.some(t => t.type.name === currentTypeFilter)
+        );
+    }
+    
     displayPokemon = filtered;
     updatePokemonGrid();
     updateResultsInfo();
@@ -747,21 +749,23 @@ function updateResultsInfo(customText = null){
         return;
     }
 
-   let filterText = '';
+    let filterText = '';
+    
+    if (currentGenFilter !== 'all') {
+        filterText += generations[currentGenFilter].name + ' ';
+    }
 
-   if(currentGenFilter !== 'all'){
-    filterText += generations[currentGenFilter].name + ' ';
-   }
-
-   if(currentTypeFilter !== 'all'){
-    filterText += currentTypeFilter + ' type ';
-   }
-
-   if (filterText){
+    if (currentTypeFilter === 'favorites') {
+        filterText = (filterText ? filterText : '') + 'favorite ';
+    } else if (currentTypeFilter !== 'all') {
+        filterText += currentTypeFilter + ' type ';
+    }
+    
+    if (filterText) {
         resultsInfo.textContent = `Showing ${displayPokemon.length} ${filterText}Pokemon`;
-   } else {
+    } else {
         resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
-   }
+    }
 }
 
 function showLoading() {
