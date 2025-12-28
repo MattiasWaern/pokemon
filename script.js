@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeFilters(){
-    initializeFilters();
+    initializeTypeFilters();
 
     initializeGenerationsFilters();
 }
@@ -168,7 +168,7 @@ function initializeGenerationsFilters(){
         const buttonsContainer = document.createElement('div');
         buttonsContainer.className = 'gen-buttons';
 
-        container.appendChild(label)
+        container.appendChild(label);
         container.appendChild(buttonsContainer);
 
         const typeFilterSection = document.querySelector('.filter-section');
@@ -177,20 +177,13 @@ function initializeGenerationsFilters(){
         }
     }
 
-    const genButtons = document.querySelector('.gen-buttoins') || document.getElementById('gen-filter');
+    const genButtons = document.querySelector('.gen-buttons') || document.getElementById('gen-filter');
 
-    const allButton = document.createElement('button');
-    allButton.className = 'type-btn active';
-    allButton.textContent = 'All';
-    allButton.style.background = 'var(--primary-color)';
-    allButton.dataset.type = 'all';
-    allButton.addEventListener('click', () => filterByType('all'));
-    typeFilter.appendChild(allButton);
-
+    
     generations.forEach((gen, index) => {
         const button = document.createElement('button');
         button.className = 'gen-btn';
-        button.textContent = gen.name
+        button.textContent = gen.name;
         button.dataset.gen = index;
         button.addEventListener('click', () => filterByGeneration(index));
         genButtons.appendChild(button);
@@ -286,6 +279,12 @@ function createPokemonCard(pokemon){
     const pokemonId = pokemon.id.toString().padStart(3, '0');
     const primaryType = pokemon.types[0].type.name;
 
+    const pokemonGen = generations.findIndex(gen =>
+        pokemon.id >= gen.start && pokemon.id <= gen.end
+    );
+
+    const genName = pokemonGen !== -1 ? generations[pokemonGen].name : '';
+
     const isFavorite = checkIfFavorite(pokemon.id);
 
     /* THE ANIMATIONS FOR "POKEMON-IMAGE"
@@ -300,13 +299,18 @@ function createPokemonCard(pokemon){
 
     card.innerHTML = 
     `
-    <div class="pokemon-card-header">
-        <span class="pokemon-id">#${pokemonId}</span>
+      <div class="pokemon-card-header">
+        <div class="pokemon-id-group">
+            <span class="pokemon-id">#${pokemonId}</span>
+            ${genName ? `<span class="gen-badge">${genName}</span>` : ''}
+        </div>
         <h3 class="pokemon-name">${pokemon.name}</h3>
-        <button class="shiny-toggle" title="Toggle Shiny">✨</button>
-        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
-            <i class="fas fa-heart"></i>
-        </button>
+        <div class="card-actions">
+            <button class="shiny-toggle" title="Toggle Shiny">✨</button>
+            <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
     </div>
 
    <div class="pokemon-image">
@@ -634,19 +638,19 @@ async function handleSearch(){
     }
 }
 
-function filterByGeneration(genIndex){
+function filterByGeneration(genIndex) {
     currentGenFilter = genIndex;
-    updateGenerationsFilterButtons();
+    updateGenerationFilterButtons();
     applyFilters();
 }
 
-function updateGenerationsFilterButtons(){
+function updateGenerationFilterButtons() {
     const buttons = document.querySelectorAll('.gen-btn');
-    buttons.forEach(buton => {
-        if(buttons.dataset.gen === String(currentGenFilter)){
-            buttons.classList.add('active');
+    buttons.forEach(button => {
+        if (button.dataset.gen === String(currentGenFilter)) {
+            button.classList.add('active');
         } else {
-            buttons.classList.remove('active');
+            button.classList.remove('active');
         }
     });
 }
@@ -703,7 +707,12 @@ function updateTypeFilterButtons(){
 function resetFilters(){
     searchInput.value = '';
     currentTypeFilter = 'all';
+    currentGenFilter = 'all'; 
     updateTypeFilterButtons();
+    
+    const genButtons = document.querySelectorAll('.gen-btn');
+    genButtons.forEach(btn => btn.classList.remove('active'));
+    
     loadPokemon();
 }
 
@@ -749,7 +758,9 @@ function updateResultsInfo(customText = null){
    }
 
    if (filterText){
-        resultsInfo.textContent = `Showing ${displayPokemon.length} ${filterText}Pokemon`
+        resultsInfo.textContent = `Showing ${displayPokemon.length} ${filterText}Pokemon`;
+   } else {
+        resultsInfo.textContent = `Showing ${displayPokemon.length} Pokemon`;
    }
 }
 

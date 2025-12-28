@@ -174,6 +174,42 @@ header{
     gap: 10px;
 }
 
+.gen-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.gen-btn {
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.gen-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.gen-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+}
+
+.gen-btn:active {
+    transform: translateY(0);
+}
+
 .type-btn{
     padding: 8px 16px;
     border-radius: 20px;
@@ -219,6 +255,22 @@ header{
     transition: all 0.3s ease;
     cursor: pointer;
     position: relative;
+}
+
+.pokemon-id-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.gen-badge {
+    background: rgba(74, 144, 226, 0.2);
+    color: var(--primary-color);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
 .modal-types {
