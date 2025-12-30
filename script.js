@@ -408,7 +408,7 @@ async function showPokemonDetail(pokemon){
 
         let shinyToggle = cardImage.querySelector('.shiny-toggle-modal');
         if(!shinyToggle){
-            shinyToggle = document.createElement('button'); 
+            shinyToggle = document.createElement('button');
             shinyToggle.className = 'shiny-toggle-modal';
             shinyToggle.textContent = '✨ Toggle Shiny';
             cardImage.appendChild(shinyToggle);
