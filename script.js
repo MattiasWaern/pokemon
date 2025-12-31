@@ -715,7 +715,6 @@ async function handleAdvancedSearch(parsed){
 
         updateResultsInfo(resultMsg);
         updatePagination(true);
-        updateFilterDisplay();
         hideLoading();
 
     } catch(err){
