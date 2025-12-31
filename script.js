@@ -604,8 +604,13 @@ async function handleSearch(){
         return;
     }
 
+    const parsed = parseSearchQueary(searchTerm);
 
-    
+    if(parsed.generation !== null || parsed.type !== null){
+        handleAdvancedSearch(parsed);
+        return;
+    }
+
     showLoading();
     hideError();
 
@@ -631,13 +636,90 @@ async function handleSearch(){
     currentTypeFilter = 'all';
 
     updateTypeFilterButtons();
+    updateGenerationFilterButtons();
     updatePokemonGrid();
     updateResultsInfo(`Search result for "${searchTerm}"`);
     updatePagination(true);
+    updateTypeFilterButtons();
     hideLoading();
     } catch (err) {
         showError(`Pokémon "${searchTerm}" not found. Try another name or ID.`);
 
+        hideLoading();
+    }
+}
+
+async function handleAdvancedSearch(parsed){
+    showLoading();
+    hideError();
+
+    try {
+        let startId = 1;
+        let endId = 1025;
+
+        if(parsed.generation !== null){
+            const gen = generations[parsed.generation];
+            startId = gen.start;
+            endId = gen.end;
+        }
+
+        const pokemonPromises = [];
+        for (let id = startId; id <= endId; id++){
+            pokemonPromises.push(
+                fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                    .then(res => res.json())
+                    .catch(() => null)
+            );
+        }
+
+        let loadedPokemon = await Promise.all(pokemonPromises);
+        loadedPokemon = loadedPokemon.filter(p => p !== null);
+
+        if(parsed.type !== null){
+            loadedPokemon = loadedPokemon.filter(pokemon =>
+                pokemon.types.some(t => t.type.name === parsed.type)
+            );
+        }
+
+        if(loadedPokemon.length === 0){
+            throw new Error('No pokemon found matching your search');
+        }
+
+        pokemonData = loadedPokemon;
+        displayPokemon = loadedPokemon;
+
+        if(parsed.generation !== null){
+            currentGenFilter = parsed.generation;
+        } else {
+            currentGenFilter = 'all';
+        }
+
+        if(parsed.type !== null){
+            currentTypeFilter = parsed.type;
+        } else {
+            currentTypeFilter = 'all';
+        }
+
+        updateTypeFilterButtons();
+        updateGenerationFilterButtons();
+        updatePokemonGrid();
+
+        let resultMsg = 'Showing ';
+        if (parsed.generation !== null){
+            resultMsg += generations[parsed.generation].name + ' ';
+        }
+        if(parsed.type !== null){
+            resultMsg += parsed.type + ' type ';
+        }
+        resultMsg += `Pokemon (${loadedPokemon.length} found)`;
+
+        updateResultsInfo(resultMsg);
+        updatePagination(true);
+        updateFilterDisplay();
+        hideLoading();
+
+    } catch(err){
+        showError(err.message || 'Failed to search pokemon');
         hideLoading();
     }
 }
