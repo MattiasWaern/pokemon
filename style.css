@@ -210,25 +210,29 @@ header{
     transform: translateY(0);
 }
 
-.type-btn{
+.type-btn {
     padding: 8px 16px;
+    border: 2px solid transparent;
     border-radius: 20px;
-    border: none;
-    font-weight: 500;
+    color: var(--text-color);
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.type-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.type-btn.active {
     color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.type-btn:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.type-btn:active{
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(255, 255, 255, 0.3);
+    border-color: black;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .results-info{
@@ -352,6 +356,7 @@ header{
 }
 
 .shiny-toggle {
+    margin-left: 4px;
     margin-bottom: 5px;
     background: rgba(255, 215, 0, 0.2);
     border: 2px solid rgba(255, 215, 0, 0.5);

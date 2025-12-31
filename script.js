@@ -301,7 +301,7 @@ function createPokemonCard(pokemon){
 
     card.innerHTML = 
     `
-      <div class="pokemon-card-header">
+    <div class="pokemon-card-header">
         <div class="pokemon-id-group">
             <span class="pokemon-id">#${pokemonId}</span>
             ${genName ? `<span class="gen-badge">${genName}</span>` : ''}
@@ -315,7 +315,7 @@ function createPokemonCard(pokemon){
         </div>
     </div>
 
-   <div class="pokemon-image">
+    <div class="pokemon-image">
         <img src="https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
         data-normal = "https://play.pokemonshowdown.com/sprites/ani/${pokemon.name.toLowerCase()}.gif"
         data-shiny = "https://play.pokemonshowdown.com/sprites/ani-shiny/${pokemon.name.toLowerCase()}.gif"
@@ -408,7 +408,7 @@ async function showPokemonDetail(pokemon){
 
         let shinyToggle = cardImage.querySelector('.shiny-toggle-modal');
         if(!shinyToggle){
-            shinyToggle = document.createElement('button');
+            shinyToggle = document.createElement('button'); 
             shinyToggle.className = 'shiny-toggle-modal';
             shinyToggle.textContent = '✨ Toggle Shiny';
             cardImage.appendChild(shinyToggle);
@@ -604,6 +604,13 @@ async function handleSearch(){
         return;
     }
 
+    const parsed = parseSearchQueary(searchTerm);
+
+    if(parsed.generation !== null || parsed.type !== null){
+        handleAdvancedSearch(parsed);
+        return;
+    }
+
     showLoading();
     hideError();
 
@@ -629,9 +636,11 @@ async function handleSearch(){
     currentTypeFilter = 'all';
 
     updateTypeFilterButtons();
+    updateGenerationFilterButtons();
     updatePokemonGrid();
     updateResultsInfo(`Search result for "${searchTerm}"`);
     updatePagination(true);
+    updateTypeFilterButtons();
     hideLoading();
     } catch (err) {
         showError(`Pokémon "${searchTerm}" not found. Try another name or ID.`);
@@ -639,6 +648,124 @@ async function handleSearch(){
         hideLoading();
     }
 }
+
+async function handleAdvancedSearch(parsed){
+    showLoading();
+    hideError();
+
+    try {
+        let startId = 1;
+        let endId = 1025;
+
+        if(parsed.generation !== null){
+            const gen = generations[parsed.generation];
+            startId = gen.start;
+            endId = gen.end;
+        }
+
+        const pokemonPromises = [];
+        for (let id = startId; id <= endId; id++){
+            pokemonPromises.push(
+                fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                    .then(res => res.json())
+                    .catch(() => null)
+            );
+        }
+
+        let loadedPokemon = await Promise.all(pokemonPromises);
+        loadedPokemon = loadedPokemon.filter(p => p !== null);
+
+        if(parsed.type !== null){
+            loadedPokemon = loadedPokemon.filter(pokemon =>
+                pokemon.types.some(t => t.type.name === parsed.type)
+            );
+        }
+
+        if(loadedPokemon.length === 0){
+            throw new Error('No pokemon found matching your search');
+        }
+
+        pokemonData = loadedPokemon;
+        displayPokemon = loadedPokemon;
+
+        if(parsed.generation !== null){
+            currentGenFilter = parsed.generation;
+        } else {
+            currentGenFilter = 'all';
+        }
+
+        if(parsed.type !== null){
+            currentTypeFilter = parsed.type;
+        } else {
+            currentTypeFilter = 'all';
+        }
+
+        updateTypeFilterButtons();
+        updateGenerationFilterButtons();
+        updatePokemonGrid();
+
+        let resultMsg = 'Showing ';
+        if (parsed.generation !== null){
+            resultMsg += generations[parsed.generation].name + ' ';
+        }
+        if(parsed.type !== null){
+            resultMsg += parsed.type + ' type ';
+        }
+        resultMsg += `Pokemon (${loadedPokemon.length} found)`;
+
+        updateResultsInfo(resultMsg);
+        updatePagination(true);
+        hideLoading();
+
+    } catch(err){
+        showError(err.message || 'Failed to search pokemon');
+        hideLoading();
+    }
+}
+
+function parseSearchQueary(query){
+    const lowerQuery = query.toLowerCase().trim();
+
+    const result = {
+        generation: null,
+        type: null,
+        pokemonName: null
+    };
+
+    const genMatch = lowerQuery.match(/gen(?:eration)?\s*([1-9]|i{1,3}|iv|v|vi{1,3}|ix)/i);
+        if(genMatch){
+            const genValue = genMatch[1].toLowerCase();
+        // Convert roman numerals or numbers to index very fun...
+            const genMap = {
+                '1': 0, 'i': 0,
+                '2': 1, 'ii': 1,
+                '3': 2, 'iii': 2,
+                '4': 3, 'iv': 3,
+                '5': 4, 'v': 4,
+                '6': 5, 'vi': 5,
+                '7': 6, 'vii': 6,
+                '8': 7, 'viii': 7,
+                '9': 8, 'ix': 8,
+            };
+        result.generation = genMap[genValue];
+        }
+
+        const types = Object.keys(typeColors);
+        for (const type of types){
+            if (lowerQuery.includes(type)){
+                result.type = type;
+                break;
+            }
+        }
+
+        if(result.generation === null && result.type === null){
+            result.pokemonName = query.trim();
+        }
+
+        return result;
+}
+
+
 
 function filterByGeneration(genIndex) {
     currentGenFilter = genIndex;
