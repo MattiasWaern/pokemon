@@ -767,10 +767,44 @@ function parseSearchQueary(query){
 
 
 
-function filterByGeneration(genIndex) {
+async function filterByGeneration(genIndex) {
     currentGenFilter = genIndex;
     updateGenerationFilterButtons();
+
+    if (genIndex !== 'all'){
+        await loadPokemonByGeneration(genIndex);
+    }
+
     applyFilters();
+}
+
+async function loadPokemonByGeneration(genIndex) {
+    showLoading();
+
+    try {
+        const gen = generations[genIndex];
+        const pokemonPromises = [];
+
+        for(let id = gen.start; id <= gen.end; id++){
+            pokemonPromises.push(
+                fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                .then(res => res.json())
+                .catch(() => null)
+            );
+        }
+
+        let loadedPokemon = await Promise.all(pokemonPromises);
+        loadedPokemon = loadedPokemon.filter(p => p !== null);
+
+        pokemonData = loadedPokemon;
+        displayPokemon = loadedPokemon;
+
+        hideLoading();
+    } catch(err){
+        console.error('Error loading generation:', err);
+        showError('Failed to load pokemon from this generation');
+        hideLoading();
+    }
 }
 
 function updateGenerationFilterButtons() {
