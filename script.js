@@ -29,7 +29,6 @@ const cardEvolution = document.getElementById('card-evolution');
 
 
 // Pokemon type colors mapping
-
 const typeColors = {
     grass: 'var(--grass)',
     fire: 'var(--fire)',
