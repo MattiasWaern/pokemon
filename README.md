@@ -65,3 +65,5 @@ länk här
 
 1. Clone the repository:
 ```bash
+git clone https://github.com/MattiasWaern/pokemon.git
+```
