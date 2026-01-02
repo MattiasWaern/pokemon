@@ -301,11 +301,11 @@ function createPokemonCard(pokemon){
     card.innerHTML = 
     `
     <div class="pokemon-card-header">
+        <h3 class="pokemon-name">${pokemon.name}</h3>
         <div class="pokemon-id-group">
             <span class="pokemon-id">#${pokemonId}</span>
             ${genName ? `<span class="gen-badge">${genName}</span>` : ''}
         </div>
-        <h3 class="pokemon-name">${pokemon.name}</h3>
         <div class="card-actions">
             <button class="shiny-toggle" title="Toggle Shiny">✨</button>
             <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-pokemon-id="${pokemon.id}">
@@ -770,8 +770,15 @@ async function filterByGeneration(genIndex) {
     currentGenFilter = genIndex;
     updateGenerationFilterButtons();
 
+    if(currentTypeFilter === 'favorites'){
+        applyFilters();
+        return;
+    }
+
     if (genIndex !== 'all'){
         await loadPokemonByGeneration(genIndex);
+    } else {
+        await loadPokemon();
     }
 
     applyFilters();
@@ -817,21 +824,23 @@ function updateGenerationFilterButtons() {
     });
 }
 
-function filterByType(type){
+async function filterByType(type){
     currentTypeFilter = type;
     updateTypeFilterButtons();
-    applyFilters();
 
-    if(type === 'all'){
-        displayPokemon = pokemonData;
-    } else {
-        displayPokemon = pokemonData.filter(pokemon => 
-            pokemon.types.some(t => t.type.name === type)
-        );
+    if(currentGenFilter !== 'all' && type !== 'favorites'){
+        applyFilters();
+        return;
     }
 
-    updatePokemonGrid();
-    updateResultsInfo();
+    if(type === 'all' && currentGenFilter === 'all'){
+        await loadPokemon();
+        return;
+    }
+
+
+    applyFilters();
+
 }
 
 function applyFilters() {
