@@ -50,7 +50,8 @@
     --shadow: rgba(0, 0, 0, 0.3);
     --modal-bg-1: #FFB6C1;
     --modal-bg-2: #AA336A;
-    --section-bg: rgba(255, 255, 255, 0.05);
+    --section-bg: #C74E51;
+    --id-section-bg:rgba(187, 79, 138, 0.747);
     --input-bg: rgba(255, 255, 255, 0.9);
     --overlay-bg: rgba(0, 0, 0, 0.8);
     
@@ -345,7 +346,7 @@ header{
 }
 
 .gen-badge {
-    background: var(--section-bg);
+    background: var(--id-section-bg);
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 15px;
@@ -412,7 +413,7 @@ header{
 }
 
 .pokemon-id{
-    background: var(--section-bg);
+    background: var(--id-section-bg);
     color: var(--text-color);
     padding: 5px 12px;
     border-radius: 20px;
@@ -507,7 +508,7 @@ header{
 
 .pokemon-stats {
     padding: 15px 20px;
-    background: rgba(255, 64, 64, 0.158);
+    background: var(--section-bg);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
