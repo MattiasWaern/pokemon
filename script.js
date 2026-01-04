@@ -134,13 +134,13 @@ function toggleTheme(){
     updateThemeIcon(newTheme);
 }
 
-function updateThemeIcon(){
+function updateThemeIcon(theme){
     const themeToggle = document.getElementById('theme-toggle');
     const icon = themeToggle.querySelector('i');
     if(theme === 'dark'){
         icon.className = 'fas fa-moon';
     } else{
-        icon.className = 'fas fa.sun'
+        icon.className = 'fas fa-sun'
     }
 }
 
