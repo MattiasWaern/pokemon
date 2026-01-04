@@ -88,7 +88,7 @@ let currentPokemonDetail = null;
 document.addEventListener('DOMContentLoaded', () => {
     initializeFilters();
     loadPokemon();
-
+    initializeTheme();
 
     searchButton.addEventListener('click', handleSearch);
     searchInput.addEventListener('keypress', (e) => {
@@ -114,6 +114,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function initializeTheme(){
+    const themeToggle = document.getElementById('theme-toggle');
+
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggle.addEventListener('click', toggleTheme);
+}
+
+function toggleTheme(){
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(){
+    const themeToggle = document.getElementById('theme-toggle');
+    const icon = themeToggle.querySelector('i');
+    if(theme === 'dark'){
+        icon.className = 'fas fa-moon';
+    } else{
+        icon.className = 'fas fa.sun'
+    }
+}
 
 function initializeFilters(){
     initializeTypeFilters();

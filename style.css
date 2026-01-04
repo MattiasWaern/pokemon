@@ -64,6 +64,7 @@ header{
 
 .header-content{
     display: flex;
+    position: relative;
     flex-direction: column;
     height: fit-content;
     justify-content: center;
@@ -145,6 +146,34 @@ header{
 .search-box button:hover{
     color: var(--primary-text-color);
 }
+
+.theme-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
 
 .controls{
     display: flex;
