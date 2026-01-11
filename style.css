@@ -10,6 +10,7 @@
   --header-gradient-1: #f5a9d0;
   --header-gradient-2: #c77fb8;
   --card-bg: rgba(255, 255, 255, 0.6);
+  --badge-bg: rgba(255, 255, 255, 0.6);
   --card-bg-hover: rgba(255, 255, 255, 0.85);
   --text-color: black;
   --text-secondary: rgba(217, 70, 166, 0.75);
@@ -25,7 +26,7 @@
   --overlay-bg: rgba(217, 70, 166, 0.75);
 
   --primary-color: #f5a9d0;
-  --accent-color: #e88dc3;
+  --accent-color: #686868;
   --secondary-color: black;
   --primary-text-color: black;
 
@@ -50,27 +51,30 @@
 }
 
 :root[data-theme="dark"] {
-  --bg-gradient-1: #f7be89;
-  --bg-gradient-2: #f99256;
-  --header-gradient-1: #ea9dae;
-  --header-gradient-2: #c74e51;
-  --card-bg: rgba(255, 255, 255, 0.1);
-  --card-bg-hover: rgba(255, 255, 255, 0.05);
+  --bg-gradient-1: #00000085;
+  --bg-gradient-2: #555555;
+  --header-gradient-1: #333333;
+  --header-gradient-2: #161616;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --badge-bg: rgba(87, 87, 87, 0.6);
+  --card-bg-hover: rgba(255, 255, 255, 0.85);
   --text-color: white;
-  --text-secondary: rgba(255, 255, 255, 0.8);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --shadow: rgba(0, 0, 0, 0.3);
-  --modal-bg-1: #ffb6c1;
-  --modal-bg-2: #aa336a;
-  --section-bg: #c74e51;
-  --id-section-bg: rgba(187, 79, 138, 0.747);
-  --input-bg: rgba(255, 255, 255, 0.9);
-  --overlay-bg: rgba(0, 0, 0, 0.8);
+  --text-secondary: rgba(217, 70, 166, 0.75);
+  --border-color: rgba(0, 0, 0, 0.35);
+  --shadow: rgba(199, 127, 184, 0.2);
+  --modal-bg-1: #0a0a0a;
+  --modal-bg-2: #000000;
+  --section-bg: #363636;
+  --id-section-bg: #4e4e4e;
+  --card-header: #080708;
+  --info-section-bg: #000000;
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --overlay-bg: rgba(217, 70, 166, 0.75);
 
-  --primary-color: #ffb6c1;
-  --accent-color: #7231bd;
-  --secondary-color: #aa336a;
-  --primary-text-color: white;
+  --primary-color: rgb(0, 0, 0);
+  --accent-color: #e88dc3;
+  --secondary-color: black;
+  --primary-text-color: black;
 
   --grass: #78c850;
   --fire: #f08030;
@@ -280,7 +284,7 @@ header {
   padding: 8px 16px;
   border: 2px solid transparent;
   border-radius: 20px;
-  background: var(--card-bg);
+  background: var(--badge-bg);
   color: var(--text-color);
   font-weight: 600;
   cursor: pointer;
