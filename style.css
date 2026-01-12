@@ -430,6 +430,12 @@ header {
   animation: heartBeat 0.3s ease;
 }
 
+.favorite-btn.active i{
+  color: #ff6b6b;
+  transform: scale(1.2);
+  transition: 0.2s ease;
+}
+
 @keyframes heartBeat {
   0%,
   100% {
@@ -605,6 +611,13 @@ header {
   align-items: center;
   border-bottom: 1px solid var(--border-color);
 }
+
+.modal-actions{
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
 
 .card-title {
   font-family: "Poppins", sans-serif;
@@ -935,7 +948,26 @@ footer {
     font-size: 14px;
   }
 
+  .search{
+    font-size: 1.4rem;
+  }
 
+  .modal-actions{
+    display: flex;
+    gap: 50px;
+    justify-content: space-between;
+  }
+
+  .modal-actions {
+  & .favorite-btn {
+    font-size: 3rem;
+  }
+}
+
+  .close-card{
+    width: 60px;
+    height: 60px;
+  }
 }
 
 
@@ -967,6 +999,10 @@ footer {
     gap: 15px;
     text-align: center;
   }
+
+   .search{
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -975,7 +1011,8 @@ footer {
   }
 
   .logo h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-right: 3rem;
   }
 
   .search-box input {
@@ -991,4 +1028,9 @@ footer {
   .card-body {
     padding: 20px;
   }
+
+  .search{
+    font-size: 1rem;
+  }
+
 }

@@ -26,6 +26,7 @@ const cardAbilities = document.getElementById('card-abilities');
 const cardStats = document.getElementById('card-stats');
 const cardMoves = document.getElementById('card-moves');
 const cardEvolution = document.getElementById('card-evolution');
+const detailFavoriteBtn = document.getElementById('detail-favorite-btn');
 
 
 // Pokemon type colors mapping
@@ -411,12 +412,23 @@ function createPokemonCard(pokemon){
     return card;
 }
 
-
 //Show detailed card for pokemon..
 async function showPokemonDetail(pokemon){
     showLoading();
     currentPokemonDetail = pokemon;
 
+    const isFavorite = checkIfFavorite(pokemon.id);
+
+    detailFavoriteBtn.classList.toggle('active', isFavorite);
+    detailFavoriteBtn.dataset.pokemonId = pokemon.id;
+
+        detailFavoriteBtn.onclick = (e) => {
+            e.stopPropagation();
+            toggleFavorite(pokemon.id);
+            detailFavoriteBtn.classList.toggle('active');
+
+            updatePokemonGrid();
+        }
     try {
         cardName.textContent = pokemon.name;
         cardId.textContent = `#${pokemon.id.toString().padStart(3, '0')}`
@@ -429,6 +441,7 @@ async function showPokemonDetail(pokemon){
         img.alt = pokemon.name;
         img.dataset.normal = normalSprite;
         img.dataset.shiny = shinySprite;
+
 
         if (!cardImage.querySelector('img')) {
             cardImage.appendChild(img);

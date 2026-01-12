@@ -24,9 +24,10 @@
             <p class="tagline">Search and discover your favourite Pokémon!</p>
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" id="search-input" placeholder= "Search Pokémon by name or ID (e.g Pikachu & 25)">
+                    <input type="text" id="search-input" placeholder= "Type Pokémon name or ID (e.g Pikachu & 25)">
                     <button id="search-btn">
-                        <i class="fas fa-search"></i>Search
+                        <i class="fas fa-search"></i> <i class="search">Search</i>
+                        
                     </button>
                 </div>
             </div>
@@ -78,13 +79,21 @@
 <div class="card" id="pokemon-card">
     <div class="card-content">
         <div class="modal-header">
-            <div>
+            <div class="modal-title">
                 <h2 class="card-title" id="card-name">Pikachu</h2>
                 <div class="card-id" id="card-id">#025</div>
             </div>
+            
+        <div class="modal-actions">
+            <button class="favorite-btn" id="detail-favorite-btn">
+                <i class="fas fa-heart"></i>
+            </button>
+
             <button class="close-card" id="close-card">
                 <i class="fas fa-times"></i>
-            </button>
+            </button> 
+        </div>
+      
         </div>
     
 
