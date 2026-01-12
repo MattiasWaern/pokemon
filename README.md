@@ -46,12 +46,17 @@ länk här
 
 ### Main View
 <!-- Lägg till screenshots -->
+<img width="1919" height="1079" alt="pokemonMAIN" src="https://github.com/user-attachments/assets/dfb7afb1-91f4-4491-8c0e-75e177562b4d" />
+<img width="1919" height="1079" alt="pokemonMainDarkMode" src="https://github.com/user-attachments/assets/97f8d433-df69-4739-a4fd-ea530c36034a" />
 
 ### Pokémon Detail Modal
 <!-- Lägg till screenshots -->
+<img width="1919" height="1079" alt="pokemonDETAIL" src="https://github.com/user-attachments/assets/6cf73f12-ef61-49d8-8dd1-c6b221465d16" />
+
 
 ### Search & Filters
 <!-- Lägg till screenshots -->
+<img width="1919" height="1079" alt="pokemonFILTER" src="https://github.com/user-attachments/assets/a064f75f-c677-4ea0-ae1b-310ae333290e" />
 
 ## 🛠️ Technologies Used
 
