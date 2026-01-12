@@ -899,6 +899,47 @@ footer {
   opacity: 0.8;
 }
 
+@media (max-width: 1024px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .type-filter {
+    justify-content: center;
+  }
+
+  .pokemon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .logo h1 {
+    font-size: 2.2rem;
+  }
+
+  .card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .pokemon-name{
+    font-size: 1.2rem;
+  }
+
+  .gen-badge {
+    font-size: 14px;
+  }
+
+
+}
+
+
+
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;
