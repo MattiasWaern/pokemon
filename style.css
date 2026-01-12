@@ -875,7 +875,7 @@ header {
 }
 
 .page-btn {
-  background: var(--secondary-color);
+  background: var(--primary-color);
   color: white;
   border: none;
   padding: 12px 25px;
