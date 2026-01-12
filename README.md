@@ -36,6 +36,7 @@ A modern, interactive Pokédex web application built with vanilla JavaScript. Br
 - Loading indicators
 - Error handling with user-friendly messages
 - Keyboard shortcuts (ESC to close modals)
+- Light & Dark mdoe
 
 ## 🚀 Demo
 
