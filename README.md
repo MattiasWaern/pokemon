@@ -39,8 +39,7 @@ A modern, interactive Pokédex web application built with vanilla JavaScript. Br
 - Light & Dark mode
 
 ## 🚀 Demo
-
-länk här
+https://mattiaswaern.github.io/pokemon/
 
 ## 📸 Screenshots
 
