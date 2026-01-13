@@ -51,6 +51,7 @@ const typeColors = {
     flying: 'var(--flying)'
 };
 
+// Type effectiveness data
 const typeEffectiveness = {
 
 normal:{
@@ -178,7 +179,6 @@ const generations = [
 
 
 // Stat colors 
-
 const statColors = {
     hp: '#FF5959',
     attack: '#F5AC78',
