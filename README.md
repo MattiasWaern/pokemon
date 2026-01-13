@@ -19,6 +19,7 @@ A interactive Pokédex web application built with vanilla JavaScript. Browse, se
 - Moveset (first 10 moves with level requirements)
 - Evolution chain with clickable evolutionary stages
 - Physical attributes (height, weight, base experience)
+- Type Effectiveness (weak, resist, immune)
 
 ### 🌟 Interactive Features
 - **Shiny Toggle**: View shiny variants of any Pokémon
