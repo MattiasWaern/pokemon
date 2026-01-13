@@ -1033,4 +1033,22 @@ footer {
     font-size: 1rem;
   }
 
+   .modal-actions{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-left: 30px;
+  }
+
+  .modal-actions {
+  & .favorite-btn {
+    font-size: 2rem;
+  }
+}
+
+.close-card{
+    width: 40px;
+    height: 40px;
+  }
+
 }

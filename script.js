@@ -51,6 +51,28 @@ const typeColors = {
     flying: 'var(--flying)'
 };
 
+const typeEffectiveness = {
+    fire: {
+        weak: ['water', 'ground', 'rock'],
+        strongAgaints: ['grass', 'ice', 'bug', 'steel'],
+        immune: []
+    },
+
+    water: {
+        weak:['electric', 'grass'],
+        strongAgaints: ['fire', 'ground', 'rock'],
+        immune: []
+    },
+
+    grass: {
+        weak: ['fire', 'ice', 'poison', 'flying', 'bug'],
+        strongAgaints:['water', 'ground', 'rock'],
+        immune:[]
+    }
+
+
+}
+
 // Genarations
 const generations = [
     { name: 'Gen I', start: 1, end: 151 },
@@ -62,6 +84,7 @@ const generations = [
     { name: 'Gen VII', start: 722, end: 809 },
     { name: 'Gen VIII', start: 810, end: 905 },
     { name: 'Gen IX', start: 906, end: 1025 },
+    { name: 'All', start: 1, end: 1025}
 ]
 
 
