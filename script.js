@@ -52,25 +52,114 @@ const typeColors = {
 };
 
 const typeEffectiveness = {
-    fire: {
-        weak: ['water', 'ground', 'rock'],
-        strongAgaints: ['grass', 'ice', 'bug', 'steel'],
-        immune: []
+
+normal:{
+    weak: ['fighting'],
+    strongAgaints: [],
+    immune: ['ghost']
+},
+
+fire: {
+    weak: ['water', 'ground', 'rock'],
+    strongAgaints: ['grass', 'ice', 'bug', 'steel'],
+    immune: []
     },
 
-    water: {
-        weak:['electric', 'grass'],
-        strongAgaints: ['fire', 'ground', 'rock'],
-        immune: []
+water: {
+    weak:['electric', 'grass'],
+    strongAgaints: ['fire', 'ground', 'rock'],
+    immune: []
     },
 
-    grass: {
-        weak: ['fire', 'ice', 'poison', 'flying', 'bug'],
-        strongAgaints:['water', 'ground', 'rock'],
-        immune:[]
-    }
+grass: {
+    weak: ['fire', 'ice', 'poison', 'flying', 'bug'],
+    strongAgaints:['water', 'ground', 'rock'],
+    immune:[]
+    },
 
+electric: {
+    weak: ['ground'],
+    strongAgaints:['electric', 'flying', 'steel'],
+    immune:[]
+    },
 
+ice: {
+    weak: ['fire', 'fighting', 'rock', 'steel'],
+    strongAgaints: ['grass', 'ground', 'flying', 'dragon'],
+    immune: []
+    },
+
+fighting: {
+    weak: ['flying', 'psychic', 'fairy'],
+    strongAgaints: ['normal', 'ice', 'rock', 'dark', 'steel'],
+    immune: []
+},
+
+poison:{
+    weak: ['ground', 'psychic'],
+    strongAgaints: ['grass', 'fairy', 'bug', 'poison', 'fighting'],
+    immune: []
+},
+
+ground: { 
+    weak: ['water','grass','ice'], 
+    strongAgaints: ['poison','rock'], 
+    immune: ['electric'] 
+},
+
+  flying: { 
+    weak: ['electric','ice','rock'], 
+    strongAgaints: ['grass','fighting','bug'], 
+    immune: ['ground'] 
+},
+
+  psychic: { 
+    weak: ['bug','ghost','dark'], 
+    strongAgaints: ['fighting','psychic'], 
+    immune: [] 
+},
+
+  bug: { 
+    weak: ['fire','flying','rock'], 
+    strongAgaints: ['grass','fighting','ground'], 
+    immune: [] 
+},
+
+  rock: { 
+    weak: ['water','grass','fighting','ground','steel'], 
+    strongAgaints: ['normal','fire','poison','flying'], 
+    immune: [] 
+},
+
+  ghost: { 
+    weak: ['ghost','dark'], 
+    strongAgaints: ['poison','bug'], 
+    immune: ['normal','fighting'] 
+},
+
+  dragon: { 
+    weak: ['ice','dragon','fairy'], 
+    strongAgaints: ['fire','water','electric','grass'], 
+    immune: [] 
+},
+
+  dark: { 
+    weak: ['fighting','bug','fairy'], 
+    strongAgaints: ['ghost','dark'], 
+    immune: ['psychic'] 
+},
+
+  steel: { 
+    weak: ['fire','fighting','ground'], 
+    strongAgaints: ['normal','grass','ice','flying','psychic','bug','rock','dragon','steel','fairy'], 
+    immune: ['poison'] 
+},
+
+  fairy: { 
+    weak: ['poison','steel'], 
+    strongAgaints: ['fighting','bug','dark'], 
+    immune: ['dragon'] 
+}
 }
 
 // Genarations
@@ -445,13 +534,47 @@ async function showPokemonDetail(pokemon){
     detailFavoriteBtn.classList.toggle('active', isFavorite);
     detailFavoriteBtn.dataset.pokemonId = pokemon.id;
 
-        detailFavoriteBtn.onclick = (e) => {
+    detailFavoriteBtn.onclick = (e) => {
             e.stopPropagation();
             toggleFavorite(pokemon.id);
             detailFavoriteBtn.classList.toggle('active');
 
             updatePokemonGrid();
         }
+
+       function getCombinedEffectiveness(types){
+        const combined = {
+            weak: new Set(),
+            strongAgaints: new Set(),
+            immune: new Set()
+        };
+
+
+        types.forEach(type => {
+            const data = typeEffectiveness[type];
+            if(!data) return;
+
+            data.weak.forEach(t => combined.weak.add(t));
+            data.strongAgaints.forEach(t => combined.strongAgaints.add(t));
+            data.immune.forEach(t => combined.immune.add(t));
+        });
+
+        combined.immune.forEach(type => {
+            combined.weak.delete(type);
+            combined.strongAgaints.delete(type);
+        });
+
+        combined.strongAgaints.forEach(type => {
+            combined.weak.delete(type);
+        })
+
+        return {
+            weak: [...combined.weak],
+            strongAgaints: [...combined.strongAgaints],
+            immune: [...combined.immune]
+        }
+    } 
+
     try {
         cardName.textContent = pokemon.name;
         cardId.textContent = `#${pokemon.id.toString().padStart(3, '0')}`
@@ -505,6 +628,43 @@ async function showPokemonDetail(pokemon){
         cardHeight.textContent  = `${pokemon.height / 10}m`;
         cardWeight.textContent  = `${pokemon.weight / 10}kg`;
         cardExp.textContent  = pokemon.base_experience || 'N/A';
+
+
+        const cardEffectiveness = document.getElementById('card-effectiveness');
+
+        const effectiveness = getCombinedEffectiveness(
+            pokemon.types.map(t => t.type.name)
+        );
+
+       cardEffectiveness.innerHTML = `
+            <div class="effect-row weak">
+               <span class="effect-label">Weak</span>
+               <div class="effect-types">
+                ${effectiveness.weak.map(t =>
+                    `<span class="type-badge" style="background:${typeColors[t]}">${t}</span>`
+                ).join('') || '<span> None </span>'}
+                </div>
+            </div>
+
+            <div class="effect-row resist">
+                <span class="effect-label">Resist</span>
+                <div class="effect-types">
+                ${effectiveness.strongAgaints.map(t =>
+                    `<span class="type-badge" style="background:${typeColors[t]}">${t}</span>`
+                ).join('') || '<span> None </span>'}
+                </div>
+            </div>
+
+            <div class="effect-row immune">
+                <span class="effect-label">Immune</span>
+                <div class="effect-types">
+                ${effectiveness.immune.map(t =>
+                    `<span class="type-badge" style="background:${typeColors[t]}">${t}</span>`
+                ).join('') || '<span> None </span>'}
+                </div>
+            </div>
+            `;
+
 
 
         cardAbilities.innerHTML = '';
@@ -578,6 +738,9 @@ async function showPokemonDetail(pokemon){
         console.error('Error loading Pokemon details:', err);
         hideLoading();
     }
+
+ 
+
 }
 
 async function updateEvolutionChain(speciesUrl){

@@ -727,6 +727,35 @@ header {
   color: var(--text-color);
 }
 
+.effectiveness-grid{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.effect-row{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.effect-label{
+  min-width: 70px;
+  font-weight: 600;
+}
+
+.effect-row.weak    .effect-label { color:#ff6b6b; }
+.effect-row.resist  .effect-label { color:#51cf66; }
+.effect-row.immune  .effect-label { color:#868e96; }
+
+.effect-types{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  
+}
+
 .abilities-list {
   display: flex;
   flex-wrap: wrap;
