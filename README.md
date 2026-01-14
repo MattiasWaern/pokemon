@@ -51,7 +51,8 @@ https://mattiaswaern.github.io/pokemon/
 <img width="1919" height="1079" alt="pokemonMainDarkMode" src="https://github.com/user-attachments/assets/97f8d433-df69-4739-a4fd-ea530c36034a" />
 
 ### Pokémon Detail Modal
-<img width="1919" height="1079" alt="pokemonDETAIL" src="https://github.com/user-attachments/assets/6cf73f12-ef61-49d8-8dd1-c6b221465d16" />
+<img width="1919" height="1079" alt="pokemondetail" src="https://github.com/user-attachments/assets/474b1518-1cfa-444d-baab-cbab1768a4d0" />
+
 
 
 ### Search & Filters
