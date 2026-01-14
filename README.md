@@ -37,9 +37,9 @@ A interactive Pokédex web application built with vanilla JavaScript. Browse, se
 - Keyboard shortcuts (ESC to close modals)
 - Light & Dark mode
 
-  ### 🚀 Pokemon quiz game "Who's that pokemon"
-  - displays random pokemon
-  - multiple choice
+### 🚀 Pokemon quiz game "Who's that pokemon"
+- displays random pokemon
+- multiple choice
 
 ## 🚀 Demo
 https://mattiaswaern.github.io/pokemon/
