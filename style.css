@@ -24,6 +24,7 @@
   --info-section-bg: #f5a9d0;
   --input-bg: rgba(255, 255, 255, 0.95);
   --overlay-bg: rgba(217, 70, 166, 0.75);
+  --resist-weak: rgb(0, 156, 0);
 
   --primary-color: #f5a9d0;
   --accent-color: #686868;
@@ -70,6 +71,7 @@
   --info-section-bg: #4a2840;
   --input-bg: rgba(45, 22, 38, 0.95);
   --overlay-bg: rgba(74, 40, 64, 0.85);
+  --resist-weak: rgb(0, 206, 0);
 
   --primary-color: #b83c7c;
   --accent-color: #e88dc3;
@@ -745,7 +747,7 @@ header {
 }
 
 .effect-row.weak    .effect-label { color:#ff6b6b; }
-.effect-row.resist  .effect-label { color:#51cf66; }
+.effect-row.resist  .effect-label {color: var(--resist-weak)}
 .effect-row.immune  .effect-label { color:#868e96; }
 
 .effect-types{
