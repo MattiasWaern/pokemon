@@ -931,6 +931,118 @@ header {
   font-size: 1.1rem;
 }
 
+
+.quiz-float-btn {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 50% 0 0 50%;
+    padding: 15px 20px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.quiz-float-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.quiz-float-btn i {
+    font-size: 1.5rem;
+}
+
+/* Overlay */
+.quiz-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 400px;
+    height: 100%;
+    background: linear-gradient(
+    135deg,
+    var(--bg-gradient-1) 0%,
+    var(--bg-gradient-2) 100%
+  );
+    color: var(--text-color);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+    transition: right 0.5s ease;
+}
+
+/* När overlay är aktiv */
+.quiz-overlay.active {
+    right: 0;
+}
+
+.quiz-container {
+    width: 100%;
+    text-align: center;
+}
+
+.quiz-img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    filter: brightness(0) contrast(1) invert(0.9); /* Silhouette */
+    transition: filter 0s ease;
+}
+
+.quiz-img.revealed {
+    filter: none;
+}
+
+.quiz-options button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.quiz-options button.correct {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+.quiz-options button.wrong {
+    background-color: #f44336;
+    border-color: #f44336;
+}
+
+.quiz-next {
+    margin-top: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #181818, #ffed4e);
+    border: none;
+    font-weight: bold;
+}
+
+.quiz-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
 footer {
   text-align: center;
   padding: 30px 0;

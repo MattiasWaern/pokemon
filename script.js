@@ -11,6 +11,13 @@ const pageInfo = document.getElementById('page-info');
 const error = document.getElementById('error');
 const errorText = document.getElementById('error-text');
 const loading = document.getElementById('loading');
+const quizOverlay = document.getElementById('quiz-overlay');
+const quizImg = document.getElementById('quiz-img');
+const quizOptions = document.getElementById('quiz-options');
+const quizResult = document.getElementById('quiz-result');
+const quizNext = document.getElementById('quiz-next');
+const openQuizBtn = document.getElementById('open-quiz-btn');
+const closeQuizBtn = document.getElementById('close-quiz-btn')
 
 // Card Elements
 const card = document.getElementById('pokemon-card');
@@ -197,6 +204,8 @@ let currentGenFilter = 'all';
 let pokemonData = [];
 let displayPokemon = [];
 let currentPokemonDetail = null;
+let correctAnswer = '';
+let answered = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeFilters();
@@ -1215,3 +1224,80 @@ function toggleFavorite(pokemonId){
 
     saveFavorites(favorites);
 }
+
+// quiz code
+
+
+openQuizBtn.onclick = () => {
+    quizOverlay.classList.add('active');
+    loadQuizPokemon();
+};
+
+closeQuizBtn.onclick = () => {
+    quizOverlay.classList.remove('active');
+};
+
+function shuffle(arr){
+    return arr.sort(() => Math.random() - 0.5)
+}
+
+async function getRandomPokemonName (){
+    const id = Math.floor(Math.random() * 151) + 1;
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const data = await res.json();
+    return data.name;
+}
+
+async function loadQuizPokemon(){
+    answered = false;
+    quizResult.textContent = '';
+    quizOptions.innerHTML = '';
+    quizImg.classList.remove('revealed');
+
+    const correctId = Math.floor(Math.random() * 151) + 1;
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${correctId}`);
+    const pokemon = await res.json();
+
+    correctAnswer = pokemon.name;
+
+     const sprite = pokemon.sprites?.other?.['official-artwork']?.front_default 
+                   || pokemon.sprites?.front_default 
+                   || '';
+    quizImg.src = sprite;
+    quizImg.alt = pokemon.name;
+    quizImg.classList.remove('revealed');
+
+    const options = new Set ([correctAnswer]);
+
+    while (options.size < 4){
+        options.add(await getRandomPokemonName());
+    }
+
+    shuffle([...options]).forEach(name => {
+        const btn = document.createElement('button');
+        btn.textContent = name;
+        btn.className = 'quiz-option';
+        btn.onclick = () => handleAnswer(btn, name);
+        quizOptions.appendChild(btn);
+    })
+}
+
+function handleAnswer(button, guess){
+    if(answered) return;
+    answered = true;
+
+    quizImg.classList.add('revealed');
+
+    [...quizOptions.children].forEach(btn => {
+        if(btn.textContent === correctAnswer){
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('wrong');
+        }
+    });
+
+    quizResult.textContent = 
+        guess === correctAnswer ? '✅ Correct' : `❌ It was ${correctAnswer}`;
+}
+
+quizNext.onclick = loadQuizPokemon;
