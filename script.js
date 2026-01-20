@@ -1226,6 +1226,7 @@ function toggleFavorite(pokemonId){
 }
 
 // quiz code
+let pokemonNameCache = [];
 let score = 0;
 let highscore = Number(localStorage.getItem('quizHighscore')) || 0;
 
@@ -1235,10 +1236,12 @@ const highscoreEl = document.getElementById('quiz-highscore');
 highscoreEl.textContent = highscore;
 scoreEl.textContent = score;
 
-openQuizBtn.onclick = () => {
+openQuizBtn.onclick = async () => {
     quizOverlay.classList.add('active');
     score = 0;
     scoreEl.textContent = score;
+
+    await initPokemonNames();
     loadQuizPokemon();
 };
 
@@ -1246,15 +1249,27 @@ closeQuizBtn.onclick = () => {
     quizOverlay.classList.remove('active');
 };
 
-function shuffle(arr){
-    return arr.sort(() => Math.random() - 0.5)
+async function initPokemonNames(){
+    if(pokemonNameCache.length) return;
+
+    const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');
+    const data = await res.json();
+    pokemonNameCache = data.results.map(p => p.name);
 }
 
-async function getRandomPokemonName (){
-    const id = Math.floor(Math.random() * 151) + 1;
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    const data = await res.json();
-    return data.name;
+
+function shuffle(arr){
+    for(let i = arr.length -1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function getRandomPokemonName (){
+    return pokemonNameCache[
+        Math.floor(Math.random() * pokemonNameCache.length)
+    ];
 }
 
 async function loadQuizPokemon(){
