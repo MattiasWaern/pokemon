@@ -1226,10 +1226,19 @@ function toggleFavorite(pokemonId){
 }
 
 // quiz code
+let score = 0;
+let highscore = Number(localStorage.getItem('quizHighscore')) || 0;
 
+const scoreEl = document.getElementById('quiz-score');
+const highscoreEl = document.getElementById('quiz-highscore');
+
+highscoreEl.textContent = highscore;
+scoreEl.textContent = score;
 
 openQuizBtn.onclick = () => {
     quizOverlay.classList.add('active');
+    score = 0;
+    scoreEl.textContent = score;
     loadQuizPokemon();
 };
 
@@ -1296,8 +1305,23 @@ function handleAnswer(button, guess){
         }
     });
 
-    quizResult.textContent = 
-        guess === correctAnswer ? '✅ Correct' : `❌ It was ${correctAnswer}`;
+
+    if (guess === correctAnswer){
+        score++;
+        scoreEl.textContent = score;
+
+        if (score > highscore){
+            highscore = score;
+            localStorage.setItem('quizHighscore', highscore);
+            highscoreEl.textContent = highscore;
+        }
+        quizResult.textContent = '✅ Correct!';
+    } else{
+        quizResult.textContent = `❌ It was ${correctAnswer}`;
+        score = 0;
+        scoreEl.textContent = score;
+    }
+
 }
 
 quizNext.onclick = loadQuizPokemon;
